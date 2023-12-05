@@ -1,8 +1,7 @@
-package com.kironstylo.weatherApp.data
+package com.kironstylo.weatherApp.data.network.Geolocation
 
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationData
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
-import com.kironstylo.weatherApp.data.network.Geolocation.GeoService
 
 class GeoRepository {
 
@@ -11,7 +10,7 @@ class GeoRepository {
     suspend fun getLocation(cityName: String): LocationData? {
         val response = api.getLocation(cityName);
         LocationProvider.location = response
-        return response;
+        return response
     }
 
 }

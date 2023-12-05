@@ -1,6 +1,6 @@
 package com.kironstylo.weatherApp.domain
 
-import com.kironstylo.weatherApp.data.GeoRepository
+import com.kironstylo.weatherApp.data.network.Geolocation.GeoRepository
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationData
 
 class GetLocationUseCase {
