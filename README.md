@@ -21,7 +21,7 @@ to this web page:
 
 Once data is returned from this call and it's successful, then the app proceeds to
 make another API call to this web page:
->[Forecast APU](https://open-meteo.com/en/docs) 
+>[Forecast API](https://open-meteo.com/en/docs) 
 
 in order to get what the temperature is in 
 the city you searched just from its latitude and longitude.
