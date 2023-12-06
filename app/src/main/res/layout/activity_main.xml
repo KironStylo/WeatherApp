@@ -82,18 +82,19 @@
         app:cardCornerRadius="24dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/secondary_color"
-        android:layout_height="300dp">
+        android:layout_height="350dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/txtCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="14dp"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 tools:text="La ciudad Bogotá está a: "
                 android:textStyle="italic"
                 android:textColor="@color/white"
@@ -101,11 +102,12 @@
             <LinearLayout
                 android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 >
                 <ImageView
+                    android:id="@+id/imgClima"
                     android:layout_marginVertical="12dp"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
@@ -127,14 +129,34 @@
                     android:textSize="45sp"
                     tools:text="20ºC"></TextView>
             </LinearLayout>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                tools:text="Hoy a las 5:00 PM"></TextView>
+                android:layout_marginHorizontal="24dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTiempo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:layout_margin="12dp"
+                    android:paddingTop="25dp"
+                    tools:text="Hoy a las 5:00 PM"></TextView>
+
+                <ImageView
+                    android:id="@+id/imgHora"
+                    android:layout_marginTop="14dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    tools:src="@drawable/ic_nightime"
+
+                    ></ImageView>
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

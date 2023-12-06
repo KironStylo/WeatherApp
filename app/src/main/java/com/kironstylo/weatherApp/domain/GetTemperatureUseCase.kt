@@ -17,8 +17,11 @@ class GetTemperatureUseCase {
          // Date to compare with fetched dates from API to find the current time's temperature
          val realDate = currentTime.format(formatter)
 
+
          Log.d("Fecha formateada",realDate)
 
+         // Image url to be associated with the temperature
+         var imageUrl: String
          // index to find temperature
          var temperatureIndex = 0
 
@@ -30,6 +33,9 @@ class GetTemperatureUseCase {
          }
 
          Log.d("El indice y el valor de la temperatura","$temperatureIndex es el indice y la temperatura ${weatherData.hourly.temperatures[temperatureIndex]}")
+
+         val temperature = weatherData.hourly.temperatures[temperatureIndex]
+
 
          return Temperature(weatherData.hourly.temperatures[temperatureIndex],LocalDateTime.now())
 
