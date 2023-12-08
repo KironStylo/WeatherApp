@@ -4,14 +4,14 @@ import com.kironstylo.weatherApp.core.RetrofitHelper
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class GeoService {
-    private val baseUrl = "https://geocoding-api.open-meteo.com/v1/"
-    private val retrofit = RetrofitHelper.getRetrofit(baseUrl)
-
+class GeoService @Inject constructor(
+    private val api: GeoApiClient
+) {
     suspend fun getLocation(cityName: String): LocationData?{
         return withContext(Dispatchers.IO){
-        val response = retrofit.create(GeoApiClient::class.java)
+        val response = api
             .getLatitudeAndLongitude("search?name=$cityName&count=10&language=en&format=json")
             response.body()
         }

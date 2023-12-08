@@ -1,5 +1,6 @@
 package com.kironstylo.weatherApp.ui.viewModel
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,26 +13,22 @@ import com.kironstylo.weatherApp.data.model.Weather.WeatherData
 import com.kironstylo.weatherApp.domain.GetLocationUseCase
 import com.kironstylo.weatherApp.domain.GetTemperatureUseCase
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
+import javax.inject.Inject
 
-class WeatherViewModel: ViewModel() {
+@HiltViewModel
+class WeatherViewModel @Inject constructor(
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val getTemperatureUseCase: GetTemperatureUseCase,
+    private val locationProvider:  LocationProvider
+): ViewModel() {
 
     val weatherModel  = MutableLiveData<Temperature>()
     val isLoading = MutableLiveData<Boolean>()
 
-    // Provides the location retrieved from the first api call to the website
-    val locationProvider = LocationProvider
-
-    // Use cases
-    val getWeatherUseCase = GetWeatherUseCase()
-    val getTemperatureUseCase = GetTemperatureUseCase()
-
-
-
-
-
-    fun getTemperature(){
+     fun getTemperature(){
 
         isLoading.postValue(true)
         viewModelScope.launch {

@@ -10,15 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.data.model.Weather.Temperature
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
 import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -35,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         weatherViewModel.weatherModel.observe(this, Observer {
-            binding.txtCiudad.text = "La ciudad de "+ binding.txtClima.text.toString() + " esta a:"
             binding.temperatura.text = it.temperature.toString()+"ºC"
             binding.txtTiempo.text = "Hoy a las "+it.date.format(DateTimeFormatter.ofPattern("HH:00")).toString()
             placeImages(it.temperature, it.date)
@@ -48,12 +52,28 @@ class MainActivity : AppCompatActivity() {
             binding.progress.isVisible = it
         })
 
+        geoViewModel.geoModel.observe(this, Observer {
+            binding.txtCiudad.text = "La ciudad de ${it.name} esta:"
+            weatherViewModel.getTemperature()
+        })
+
+
         binding.enviar.setOnClickListener {
             if (binding.txtClima.text.toString().isEmpty()) {
                 Toast.makeText(this, "Ingrese el nombre de la ciudad", Toast.LENGTH_SHORT).show()
             } else {
-                geoViewModel.searchCity(binding.txtClima.text.toString())
+                val job = lifecycleScope.launch{
+                    geoViewModel.searchCity(binding.txtClima.text.toString())
+                }
+
+                runBlocking {
+                    job.join()
+                }
+
+                // Retrieve the temperature of that place
+                // As soon as the location data has completely been fetched
                 weatherViewModel.getTemperature()
+
             }
         }
 

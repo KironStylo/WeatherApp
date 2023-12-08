@@ -5,16 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.model.GeoLocation.Result
 import com.kironstylo.weatherApp.domain.GetLocationUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GeoViewModel: ViewModel() {
+@HiltViewModel
+class GeoViewModel @Inject constructor(
+    private val getLocationUseCase : GetLocationUseCase
+): ViewModel() {
 
     val geoModel = MutableLiveData<Result>()
     val isLoading = MutableLiveData<Boolean>()
 
-    val getLocationUseCase = GetLocationUseCase()
-
-    fun searchCity(cityName: String) {
+    suspend fun searchCity(cityName: String) {
 
         isLoading.postValue(true)
         viewModelScope.launch {
