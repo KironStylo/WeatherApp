@@ -17,7 +17,7 @@ class GeoViewModel @Inject constructor(
     val geoModel = MutableLiveData<Result>()
     val isLoading = MutableLiveData<Boolean>()
 
-    suspend fun searchCity(cityName: String) {
+     fun searchCity(cityName: String) {
 
         isLoading.postValue(true)
         viewModelScope.launch {

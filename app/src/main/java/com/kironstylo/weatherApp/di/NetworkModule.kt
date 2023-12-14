@@ -2,12 +2,14 @@ package com.kironstylo.weatherApp.di
 
 import com.kironstylo.weatherApp.data.network.Forecast.WeatherApiClient
 import com.kironstylo.weatherApp.data.network.Geolocation.GeoApiClient
+import com.kironstylo.weatherApp.data.network.Timezone.TimeApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -39,6 +41,16 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @Named("TimeApi")
+    fun providesRetrofit3(): Retrofit{
+        return Retrofit.Builder()
+            .baseUrl("https://timeapi.io/api/TimeZone/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
     fun provideGeoApiClient(@Named("GeoApi")retrofit: Retrofit):GeoApiClient{
         return retrofit.create(GeoApiClient::class.java)
     }
@@ -47,5 +59,11 @@ object NetworkModule {
     @Singleton
     fun provideWeatherApiClient(@Named("WeatherApi")retrofit: Retrofit):WeatherApiClient{
         return retrofit.create(WeatherApiClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimeApiClient(@Named("TimeApi")retrofit: Retrofit): TimeApiClient{
+        return retrofit.create(TimeApiClient::class.java)
     }
 }

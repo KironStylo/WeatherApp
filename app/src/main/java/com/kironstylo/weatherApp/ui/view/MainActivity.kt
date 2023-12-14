@@ -15,6 +15,7 @@ import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.data.model.Weather.Temperature
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
 import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
+import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     private val geoViewModel: GeoViewModel by viewModels()
 
+    private val timeViewModel: TimeViewModel by viewModels()
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +44,17 @@ class MainActivity : AppCompatActivity() {
 
         weatherViewModel.weatherModel.observe(this, Observer {
             binding.temperatura.text = it.temperature.toString()+"ºC"
-            binding.txtTiempo.text = "Hoy a las "+it.date.format(DateTimeFormatter.ofPattern("HH:00")).toString()
-            placeImages(it.temperature, it.date)
+            //binding.txtTiempo.text = "Hoy a las "+it.date.format(DateTimeFormatter.ofPattern("HH:00")).toString()
+            placeImages(it.temperature)
+        })
+
+        timeViewModel.timeModel.observe(this, Observer{
+            val dateTime = LocalDateTime.parse(it.currentLocalTime)
+            val formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+            Log.d("Main Activity","Time in hours and minutes  $formattedTime")
+            binding.txtTiempo.text = "Son las $formattedTime"
+            placeImages2(dateTime)
+            weatherViewModel.getTemperature()
         })
 
 
@@ -54,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         geoViewModel.geoModel.observe(this, Observer {
             binding.txtCiudad.text = "La ciudad de ${it.name} esta:"
-            weatherViewModel.getTemperature()
+            timeViewModel.getTimeZone()
         })
 
 
@@ -62,17 +74,7 @@ class MainActivity : AppCompatActivity() {
             if (binding.txtClima.text.toString().isEmpty()) {
                 Toast.makeText(this, "Ingrese el nombre de la ciudad", Toast.LENGTH_SHORT).show()
             } else {
-                val job = lifecycleScope.launch{
-                    geoViewModel.searchCity(binding.txtClima.text.toString())
-                }
-
-                runBlocking {
-                    job.join()
-                }
-
-                // Retrieve the temperature of that place
-                // As soon as the location data has completely been fetched
-                weatherViewModel.getTemperature()
+                geoViewModel.searchCity(binding.txtClima.text.toString())
 
             }
         }
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun placeImages(temperature: Double,date: LocalDateTime) {
+    private fun placeImages(temperature: Double) {
         var drawable = if(temperature > 10.0){
             ContextCompat.getDrawable(this, R.drawable.ic_hot_temperature)
         }else if(temperature > 0 && temperature < 10.0 || temperature < 0){
@@ -88,15 +90,18 @@ class MainActivity : AppCompatActivity() {
         } else{
             ContextCompat.getDrawable(this, R.drawable.ic_zero_temperature)
         }
+        binding.imgClima.setImageDrawable(drawable)
 
-        Log.d("Main Acitivity", "Hora: "+ date.hour)
+    }
+
+    private fun placeImages2(date: LocalDateTime){
         var drawable2 = if(date.hour in 0..11){
             ContextCompat.getDrawable(this,R.drawable.ic_daytime)
         }else{
             ContextCompat.getDrawable(this,R.drawable.ic_nightime)
         }
+        Log.d("Main Acitivity - Place Images 2", "Hora: "+ date.hour)
 
-        binding.imgClima.setImageDrawable(drawable)
         binding.imgHora.setImageDrawable(drawable2)
 
     }
