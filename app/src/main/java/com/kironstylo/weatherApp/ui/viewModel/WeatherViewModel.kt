@@ -1,22 +1,16 @@
 package com.kironstylo.weatherApp.ui.viewModel
 
-import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
-import com.kironstylo.weatherApp.data.model.GeoLocation.Result
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
-import com.kironstylo.weatherApp.data.model.Weather.Hourly
 import com.kironstylo.weatherApp.data.model.Weather.Temperature
-import com.kironstylo.weatherApp.data.model.Weather.WeatherData
-import com.kironstylo.weatherApp.domain.GetLocationUseCase
 import com.kironstylo.weatherApp.domain.GetTemperatureUseCase
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,10 +31,11 @@ class WeatherViewModel @Inject constructor(
 
 
             val locationData = locationProvider.location
+            val index = locationProvider.index
             Log.d("WeatherViewModel","Los datos de localizacion son"+ (locationData?.results?.get(0)?.name))
 
-            if(locationData?.results?.isNotEmpty() == true){
-                val location = locationData.results[0]
+            if(locationData?.results?.isNotEmpty() == true && index != null){
+                val location = locationData.results[index]
                 val result= getWeatherUseCase(location)
 
                 Log.d("WeatherViewModel", "Localizacion: $location")

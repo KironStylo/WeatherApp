@@ -23,9 +23,10 @@ class TimeViewModel @Inject constructor(
     fun getTimeZone(){
         viewModelScope.launch{
             val locationData = locationProvider.location
+            val index = locationProvider.index
             Log.d("TimeViewModel","Los datos de localizacion son"+ (locationData?.results?.get(0)?.name))
-            if(locationData?.results?.isNotEmpty() == true){
-                val location = locationData.results[0]
+            if(locationData?.results?.isNotEmpty() == true && index != null){
+                val location = locationData.results[index]
 
                 val result = getTimeUseCase(location)
 

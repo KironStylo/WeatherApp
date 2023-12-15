@@ -7,4 +7,5 @@ import javax.inject.Singleton
 @Singleton
 class LocationProvider @Inject constructor(){
     var location: LocationData? = null;
+    var index: Int? = 0;
 }

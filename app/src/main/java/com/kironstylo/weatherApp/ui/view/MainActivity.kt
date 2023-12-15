@@ -1,7 +1,6 @@
 package com.kironstylo.weatherApp.ui.view
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,17 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kironstylo.weatherApp.Adapter.ResultAdapter
 import com.kironstylo.weatherApp.R
-import com.kironstylo.weatherApp.data.model.Weather.Temperature
+import com.kironstylo.weatherApp.data.model.GeoLocation.Result
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
 import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -64,8 +61,29 @@ class MainActivity : AppCompatActivity() {
             binding.progress.isVisible = it
         })
 
+        // Determines if the list of cities should be shown on the screen or not depending on user interaction
+        geoViewModel.isVisibleList.observe(this,Observer{
+            binding.resultados.isVisible = it
+        })
+
+        // Determines if the card info should be shown on the screen or not depending on user interaction
+        geoViewModel.isVisibleCard.observe(this,Observer{
+            binding.cardInfo.isVisible = it
+        })
+
         geoViewModel.geoModel.observe(this, Observer {
-            binding.txtCiudad.text = "La ciudad de ${it.name} esta:"
+            // It displays the list of cities so users can see the places
+            // that are named after the name typed by them in the search bar.
+            initRecyclerView(it)
+        })
+
+        geoViewModel.cityName.observe(this, Observer{
+            val message: String = "La ciudad de $it esta a"
+
+            // Setting the text to read the name of the city :
+            binding.txtCiudad.text = message
+
+            // The time of that place is obtained from the latitude and longitude data
             timeViewModel.getTimeZone()
         })
 
@@ -82,8 +100,24 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun initRecyclerView(results: List<Result>){
+        binding.rvResultados.layoutManager = LinearLayoutManager(this)
+        // Loading the cities into the recycler view for user to choose the city of their interest
+        binding.rvResultados.adapter = ResultAdapter(results) { result -> onItemSelected(result) }
+    }
+
+    private fun onItemSelected(result: Result){
+
+        Log.d("Location Data","Datos del elemento seleccionado longitud es ${result.longitude} y la latitud es ${result.latitude}")
+
+        // The element retrieved is searched in view model
+        // so the location provider will know what index to access
+        geoViewModel.findCityIndex(result)
+
+    }
+
     private fun placeImages(temperature: Double) {
-        var drawable = if(temperature > 10.0){
+        val drawable = if(temperature > 10.0){
             ContextCompat.getDrawable(this, R.drawable.ic_hot_temperature)
         }else if(temperature > 0 && temperature < 10.0 || temperature < 0){
             ContextCompat.getDrawable(this, R.drawable.ic_cold_temperature)
@@ -95,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun placeImages2(date: LocalDateTime){
-        var drawable2 = if(date.hour in 0..11){
+        val drawable2 = if(date.hour in 0..11){
             ContextCompat.getDrawable(this,R.drawable.ic_daytime)
         }else{
             ContextCompat.getDrawable(this,R.drawable.ic_nightime)
