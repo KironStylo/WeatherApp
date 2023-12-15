@@ -1,7 +1,11 @@
 package com.kironstylo.weatherApp.data.model.GeoLocation
 
-class LocationProvider {
-    companion object{
-        var location: LocationData? = null;
-    }
+import javax.inject.Inject
+import javax.inject.Singleton
+
+
+@Singleton
+class LocationProvider @Inject constructor(){
+    var location: LocationData? = null;
+    var index: Int? = 0;
 }

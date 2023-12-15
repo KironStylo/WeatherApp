@@ -4,5 +4,6 @@ import java.time.LocalDateTime
 
 data class Temperature(
     val temperature: Double,
-    val date: LocalDateTime
+    val date: LocalDateTime,
+    val cityName: String?=""
 )
