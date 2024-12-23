@@ -1,18 +1,18 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.kironstylo.weatherApp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.kironstylo.weatherApp"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -43,34 +43,34 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+    testImplementation(libs.junit)
 
     // Fragment
-    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation (libs.fragment.ktx)
     // Activity
-    implementation ("androidx.activity:activity-ktx:1.8.1")
+    implementation (libs.activity.ktx)
     // ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation (libs.lifecycle.viewmodel.ktx)
     // LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation (libs.lifecycle.livedata.ktx)
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
     //Corrutinas
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation (libs.kotlinx.coroutines.android)
 
     // Dagger-hilt
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
 
 kapt {
