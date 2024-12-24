@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -37,6 +38,7 @@ android {
     }
 
     buildFeatures{
+        compose = true
         viewBinding = true
     }
 }
@@ -48,6 +50,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
+
+    // Jetpack Compose libraries
+    implementation(libs.androidx.material3)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
 
     // Fragment
     implementation (libs.fragment.ktx)
