@@ -46,41 +46,48 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.androidx.ui.tooling.preview.android)
-    testImplementation(libs.junit)
+
 
     // Jetpack Compose libraries
+    implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.material3)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
 
+    // ViewModel Dependencies
+    implementation (libs.lifecycle.viewmodel.ktx)
+    implementation (libs.lifecycle.livedata.ktx)
+    implementation(libs.androidx.runtime.livedata)
+
+    // Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Corrutinas
+    implementation (libs.kotlinx.coroutines.android)
 
     // Fragment
     implementation (libs.fragment.ktx)
     // Activity
     implementation (libs.activity.ktx)
-    // ViewModel
-    implementation (libs.lifecycle.viewmodel.ktx)
-    // LiveData
-    implementation (libs.lifecycle.livedata.ktx)
 
-    // Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
-    //Corrutinas
-    implementation (libs.kotlinx.coroutines.android)
-
-    // Dagger-hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
-
+    // Testing dependencies
+    testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
 }
 
 kapt {
