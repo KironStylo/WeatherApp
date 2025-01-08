@@ -72,6 +72,7 @@ dependencies {
 
     // Dependency Injection
     implementation(libs.hilt.android)
+    debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.hilt.android.compiler)
 
     //Corrutinas
