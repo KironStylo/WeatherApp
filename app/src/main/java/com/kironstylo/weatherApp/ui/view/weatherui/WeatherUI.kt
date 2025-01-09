@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
+import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 
@@ -52,6 +53,7 @@ fun WeatherScreen(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewMod
 @Composable
 fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
     val timeZone: DateTimeFormatted by timeViewModel.timeZone.observeAsState(initial = DateTimeFormatted())
+    val weatherInfo: WeatherInfo by weatherViewModel.weatherInfo.observeAsState(initial = WeatherInfo())
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,13 +88,13 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
             )
             DateTimeText(timeZone)
             Text(
-                "14ºC",
+                "${weatherInfo.weatherTemperature}ºC",
                 style = TextStyle(
                     fontSize = 50.sp,
                     fontWeight = FontWeight.Medium
                 )
             )
-            MinMaxTemperatureInfo()
+            MinMaxTemperatureInfo(weatherInfo.weatherMaxTemperature, weatherInfo.weatherMinTemperature)
             ExtraWeatherInfo()
         }
     }
@@ -166,36 +168,36 @@ fun DateTimeText(timeZone: DateTimeFormatted) {
 }
 
 @Composable
-fun MinMaxTemperatureInfo() {
+fun MinMaxTemperatureInfo(maxTemp: Double, minTemp:Double) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        MinTempInfo()
-        MaxTempInfo()
+        MinTempInfo(minTemp)
+        MaxTempInfo(maxTemp)
     }
 }
 
 @Composable
-fun MinTempInfo() {
+fun MinTempInfo(minTem: Double) {
     Text(
         buildAnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp)) {
                 append("Min:")
             }
             withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Light)) {
-                append("8ºC")
+                append("${minTem}ºC")
             }
         }
     )
 }
 
 @Composable
-fun MaxTempInfo() {
+fun MaxTempInfo(maxTemp: Double) {
     Text(
         buildAnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp)) {
                 append("Max:")
             }
             withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Light)) {
-                append("20ºC")
+                append("${maxTemp}ºC")
             }
         }
     )
