@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
                 CityScreen(geoViewModel){
                     navController.navigate("Screen2")
                     timeViewModel.getTimeZone()
-                    weatherViewModel.getTemperature()
+                    weatherViewModel.getWeather()
                 }
             }
             composable("Screen2"){

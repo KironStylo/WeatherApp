@@ -1,12 +1,15 @@
 package com.kironstylo.weatherApp.ui.viewModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
 import com.kironstylo.weatherApp.data.model.Weather.Temperature
+import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
+import com.kironstylo.weatherApp.domain.GetDailyTemperature
 import com.kironstylo.weatherApp.domain.GetTemperatureUseCase
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,17 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
-    private val getTemperatureUseCase: GetTemperatureUseCase,
+    private val getDailyTemperature: GetDailyTemperature,
     private val locationProvider:  LocationProvider,
     private val timeProvider: TimeProvider
 ): ViewModel() {
 
-    val weatherModel  = MutableLiveData<Temperature>()
-    val isLoading = MutableLiveData<Boolean>()
 
-      fun getTemperature(){
+    private val _weatherInfo = MutableLiveData<WeatherInfo>()
+    val weatherInfo : LiveData<WeatherInfo> = _weatherInfo
 
-        isLoading.postValue(true)
+      fun getWeather(){
+
+        //isLoading.postValue(true)
         viewModelScope.launch {
 
 
@@ -45,18 +49,14 @@ class WeatherViewModel @Inject constructor(
 
                     val time = timeProvider.timezone
                     if(time != null){
-                        val temperature = getTemperatureUseCase.getTemperature(result, time)
-                        weatherModel.postValue(temperature)
-                        isLoading.postValue(false)
+                        val temperature = getDailyTemperature(result, time)
+                        Log.d("WeatherViewModel", "Temperature: ${temperature.weatherTemperature}")
+                        _weatherInfo.value  = temperature
 
                     }
 
                 }
-            }else{
-
             }
-
-
         }
     }
 
