@@ -7,12 +7,12 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
-class GetFormattedDateUseCase @Inject constructor() {
-
+class GetFormattedDateUseCase @Inject constructor(
+    private val getDateFormatter: GetDateFormatter
+) {
     operator fun invoke(timezone: Timezone): DateTimeFormatted{
-        val localDateTime = LocalDateTime.parse(timezone.currentLocalTime)
-        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
-        return DateTimeFormatted(dateFormatter.format(localDateTime), timeFormatter.format(localDateTime))
+        val dateFormat = getDateFormatter(timezone.currentLocalTime, "dd/MM/yyyy")
+        val timeFormat = getDateFormatter(timezone.currentLocalTime, "hh:mm a")
+        return DateTimeFormatted(dateFormat, timeFormat)
     }
 }
