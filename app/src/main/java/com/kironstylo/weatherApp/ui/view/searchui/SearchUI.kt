@@ -1,6 +1,7 @@
 package com.kironstylo.weatherApp.ui.view.searchui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,7 +44,7 @@ import com.kironstylo.weatherApp.data.model.GeoLocation.Result
 import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
 
 @Composable
-fun CityScreen(geoViewModel: GeoViewModel) {
+fun CityScreen(geoViewModel: GeoViewModel, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +56,7 @@ fun CityScreen(geoViewModel: GeoViewModel) {
         )
     ) {
         Search(geoViewModel)
-        Result(geoViewModel)
+        Result(geoViewModel, onClick)
     }
 }
 
@@ -68,15 +69,14 @@ fun Search(geoViewModel: GeoViewModel) {
             .fillMaxWidth()
             .height(200.dp)
             .clip(RoundedCornerShape(40.dp))
-            .background(Color(0xFFCDDDDD))
-        ,
+            .background(Color(0xFFCDDDDD)),
         verticalArrangement = Arrangement.Center
     ) {
         CityTitle(Modifier.align(Alignment.Start))
-        City(cityName){
+        City(cityName) {
             geoViewModel.onCityNameChanged(it)
         }
-        CityButton{
+        CityButton {
             geoViewModel.searchCity(cityName)
         }
     }
@@ -92,16 +92,18 @@ fun CityTitle(modifier: Modifier) {
             fontSize = 24.sp,
             color = Color(0xFF051014)
         ),
-        modifier = modifier.padding(vertical = 2.dp).fillMaxWidth()
+        modifier = modifier
+            .padding(vertical = 2.dp)
+            .fillMaxWidth()
     )
 }
 
 @Composable
-fun City(cityName: String, onTextChanged:(String) -> Unit) {
+fun City(cityName: String, onTextChanged: (String) -> Unit) {
     OutlinedTextField(
         value = cityName,
         maxLines = 1,
-        onValueChange = {onTextChanged(it)},
+        onValueChange = { onTextChanged(it) },
         label = {
             Text(text = "Ingresa nombre de ciudad")
         },
@@ -112,16 +114,20 @@ fun City(cityName: String, onTextChanged:(String) -> Unit) {
             focusedLabelColor = Color(0xFF9a6add),
         ),
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp)
     )
 
 }
 
 @Composable
-fun CityButton(onButtonPressed:() -> Unit) {
+fun CityButton(onButtonPressed: () -> Unit) {
     Button(
-        onClick =  onButtonPressed ,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        onClick = onButtonPressed,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFF9a6add),
             contentColor = Color.White
@@ -132,32 +138,44 @@ fun CityButton(onButtonPressed:() -> Unit) {
 }
 
 @Composable
-fun Result(geoViewModel: GeoViewModel){
-    val cityList :List<Result> by geoViewModel.cityList.observeAsState(initial = listOf())
+fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
+    val cityList: List<Result> by geoViewModel.cityList.observeAsState(initial = listOf())
     val rvState = rememberLazyListState()
-    LazyColumn ( state = rvState, modifier = Modifier.height(225.dp).fillMaxWidth(), contentPadding = PaddingValues(horizontal= 9.dp),verticalArrangement = Arrangement.spacedBy(2.dp)){
-        items(cityList){
-            city -> CityResultCard(city)
-
+    LazyColumn(
+        state = rvState,
+        modifier = Modifier
+            .height(225.dp)
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 9.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        items(cityList) { city ->
+            CityResultCard(city) {
+                geoViewModel.findCityIndex(city)
+                onClick()
+            }
         }
     }
 }
 
 @Composable
-fun CityResultCard(city: Result){
+fun CityResultCard(city: Result, onClick: (Result) -> Unit) {
     Column(
         modifier = Modifier
             .background(Color.White)
             .height(75.dp)
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 10.dp, vertical = 8.dp)
+            .clickable {
+                onClick(city)
+            },
         verticalArrangement = Arrangement.spacedBy(
             space = 4.dp,
             alignment = Alignment.CenterVertically
         )
-    ){
+    ) {
         Text(text = city.name, modifier = Modifier.wrapContentSize())
-        Row(modifier = Modifier.fillMaxWidth()){
+        Row(modifier = Modifier.fillMaxWidth()) {
             Text(text = city.country ?: "Unknown country", modifier = Modifier.weight(1f))
             Text(text = city.alias ?: "Unknown alias")
 

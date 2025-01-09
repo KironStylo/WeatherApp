@@ -1,6 +1,5 @@
 package com.kironstylo.weatherApp.ui.view.weatherui
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,15 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,16 +25,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
+import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
+import com.kironstylo.weatherApp.data.model.Timezone.Timezone
+import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
+import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 
 @Composable
-fun WeatherScreen() {
+fun WeatherScreen(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
     Column(
         modifier =
         Modifier
@@ -45,12 +45,13 @@ fun WeatherScreen() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WeatherInfoCard()
+        WeatherInfoCard(timeViewModel, weatherViewModel)
     }
 }
 
 @Composable
-fun WeatherInfoCard() {
+fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
+    val timeZone: DateTimeFormatted by timeViewModel.timeZone.observeAsState(initial = DateTimeFormatted())
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,7 +84,7 @@ fun WeatherInfoCard() {
                 modifier = Modifier.size(120.dp),
                 contentDescription = ""
             )
-            DateTimeText()
+            DateTimeText(timeZone)
             Text(
                 "14ºC",
                 style = TextStyle(
@@ -138,8 +139,8 @@ fun ExtraWeatherInfo() {
 
 @Composable
 fun ExtraWeatherCard(title: String, image: @Composable () -> Unit, value: String) {
-    val textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
-    val textStyle2 = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)
+    val textStyle = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Normal)
+    val textStyle2 = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         image()
         Text(value, style = textStyle2)
@@ -148,18 +149,18 @@ fun ExtraWeatherCard(title: String, image: @Composable () -> Unit, value: String
 }
 
 @Composable
-fun DateTimeText() {
+fun DateTimeText(timeZone: DateTimeFormatted) {
     val textStyle = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal
     )
-    Row(modifier = Modifier.height(16.dp), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text("17/12/2024", style = textStyle)
+    Row(modifier = Modifier.height(18.dp), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+        Text(timeZone.date ?: "", style = textStyle)
         VerticalDivider(
             thickness = 1.dp,
             color = Color(0xFF051014)
         )
-        Text("7:21 PM", style = textStyle)
+        Text(timeZone.time ?: "", style = textStyle)
 
     }
 }
@@ -198,11 +199,4 @@ fun MaxTempInfo() {
             }
         }
     )
-}
-
-
-@Preview
-@Composable
-fun WeatherScreenPreview() {
-    WeatherScreen()
 }
