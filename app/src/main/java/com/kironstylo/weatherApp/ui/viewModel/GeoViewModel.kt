@@ -46,9 +46,8 @@ class GeoViewModel @Inject constructor(
     }
 
     fun findCityIndex(result: Result){
-        isVisibleList.postValue(false)
-        isVisibleCard.postValue(true)
         //cityName.postValue(result.name)
+        Log.d("Location Index","New city has been set to ${result.name}")
         locationProvider.index = locationProvider.location?.results?.indexOf(result) ?: 0
 
     }
