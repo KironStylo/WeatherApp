@@ -83,6 +83,9 @@ dependencies {
     // Activity
     implementation (libs.activity.ktx)
 
+    // Navigation Dependency
+    implementation(libs.androidx.navigation.compose)
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
