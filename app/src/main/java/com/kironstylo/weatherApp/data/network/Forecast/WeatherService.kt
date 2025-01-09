@@ -14,7 +14,7 @@ class WeatherService @Inject constructor(
     suspend fun getWeather(locationData: Result): WeatherData?{
         return withContext(Dispatchers.IO){
             val response = api
-                .getWeatherData("forecast?latitude=${locationData.latitude}&longitude=${locationData.longitude}&hourly=temperature_2m&timezone=auto")
+                .getWeatherData("forecast?latitude=${locationData.latitude}&longitude=${locationData.longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto")
             response.body()
         }
     }
