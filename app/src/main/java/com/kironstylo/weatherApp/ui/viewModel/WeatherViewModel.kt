@@ -50,7 +50,7 @@ class WeatherViewModel @Inject constructor(
                     val time = timeProvider.timezone
                     if(time != null){
                         val temperature = getDailyTemperature(result, time)
-                        Log.d("WeatherViewModel", "Temperature: ${temperature.weatherTemperature}")
+                        Log.d("WeatherViewModel", "Temperature: ${temperature.weatherTemperature}, Time: ${temperature.weatherTime24}")
                         _weatherInfo.value  = temperature
 
                     }

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
+import com.kironstylo.weatherApp.data.model.Weather.Weather
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
@@ -74,7 +75,8 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                "Partly Cloudy",
+                Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).description
+                    ?: "Unknown weather",
                 Modifier.padding(top = 18.dp),
                 style = TextStyle(
                     fontSize = 24.sp,
@@ -82,7 +84,8 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
                 )
             )
             Image(
-                painter = painterResource(id = R.drawable.cloudy),
+                painter = painterResource(id = Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).icon
+                    ?: R.drawable.cloudy),
                 modifier = Modifier.size(120.dp),
                 contentDescription = ""
             )

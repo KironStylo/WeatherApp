@@ -12,17 +12,20 @@ class GetDailyTemperature @Inject constructor(
      operator fun invoke (weatherData: WeatherData, timezone: Timezone): WeatherInfo {
          val hourlyDate = getDateFormatter(timezone.currentLocalTime, "yyyy-MM-dd'T'HH:00")
          val dailyDate = getDateFormatter(timezone.currentLocalTime, "yyyy-MM-dd")
-         val time = getDateFormatter(timezone.currentLocalTime, "hh a")
+         val time12 = getDateFormatter(timezone.currentLocalTime, "hh a")
+         val time24 = getDateFormatter.get24hour(timezone.currentLocalTime)
+
 
          val hourlyIndex = weatherData.hourly.dates.indexOf(hourlyDate)
          val dailyIndex = weatherData.daily.dates.indexOf(dailyDate)
 
          // Weather Info
          val currentTemp = weatherData.hourly.temperatures[hourlyIndex]
+         val weatherCode = weatherData.hourly.codes[hourlyIndex]
          val maxTemp = weatherData.daily.maxTemperatures[dailyIndex]
          val minTemp = weatherData.daily.minTemperatures[dailyIndex]
 
-         val weatherInfo = WeatherInfo("",currentTemp,minTemp, maxTemp, time)
+         val weatherInfo = WeatherInfo(weatherCode,currentTemp,minTemp, maxTemp, time12, time24)
 
          return weatherInfo
     }
