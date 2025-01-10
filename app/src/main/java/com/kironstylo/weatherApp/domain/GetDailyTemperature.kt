@@ -22,10 +22,13 @@ class GetDailyTemperature @Inject constructor(
          // Weather Info
          val currentTemp = weatherData.hourly.temperatures[hourlyIndex]
          val weatherCode = weatherData.hourly.codes[hourlyIndex]
+         val currentSpeed = weatherData.hourly.windspeedList[hourlyIndex]
+         val currentHumidity = weatherData.hourly.humidityList[hourlyIndex]
+         val currentPrecipitation = weatherData.hourly.precipitationList[hourlyIndex]
          val maxTemp = weatherData.daily.maxTemperatures[dailyIndex]
          val minTemp = weatherData.daily.minTemperatures[dailyIndex]
 
-         val weatherInfo = WeatherInfo(weatherCode,currentTemp,minTemp, maxTemp, time12, time24)
+         val weatherInfo = WeatherInfo(weatherCode,currentTemp,minTemp, maxTemp, time12, time24, currentPrecipitation, currentHumidity, currentSpeed)
 
          return weatherInfo
     }

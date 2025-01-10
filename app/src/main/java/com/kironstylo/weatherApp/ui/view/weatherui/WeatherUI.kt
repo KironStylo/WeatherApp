@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
-import com.kironstylo.weatherApp.data.model.Timezone.Timezone
 import com.kironstylo.weatherApp.data.model.Weather.Weather
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
@@ -75,8 +74,7 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).description
-                    ?: "Unknown weather",
+                Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).description,
                 Modifier.padding(top = 18.dp),
                 style = TextStyle(
                     fontSize = 24.sp,
@@ -84,8 +82,7 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
                 )
             )
             Image(
-                painter = painterResource(id = Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).icon
-                    ?: R.drawable.cloudy),
+                painter = painterResource(id = Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).icon),
                 modifier = Modifier.size(120.dp),
                 contentDescription = ""
             )
@@ -98,13 +95,13 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
                 )
             )
             MinMaxTemperatureInfo(weatherInfo.weatherMaxTemperature, weatherInfo.weatherMinTemperature)
-            ExtraWeatherInfo()
+            ExtraWeatherInfo(weatherInfo.weatherPrecipitaion, weatherInfo.weatherHumidity, weatherInfo.weatherWindspeed)
         }
     }
 }
 
 @Composable
-fun ExtraWeatherInfo() {
+fun ExtraWeatherInfo(precipitationProb: Int, humidity: Int, windspeed: Double ) {
     Row (modifier = Modifier.padding(4.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)){
         ExtraWeatherCard(
             "Rain",
@@ -115,7 +112,7 @@ fun ExtraWeatherInfo() {
                     Modifier.size(65.dp)
                 )
             },
-            "20%"
+            "$precipitationProb%"
         )
         ExtraWeatherCard(
             "Humidity",
@@ -126,7 +123,7 @@ fun ExtraWeatherInfo() {
                     Modifier.size(65.dp)
                 )
             },
-            "30%"
+            "$humidity%"
         )
         ExtraWeatherCard(
             "Wind Speed",
@@ -137,7 +134,7 @@ fun ExtraWeatherInfo() {
                     Modifier.size(65.dp)
                 )
             },
-            "12 km/h"
+            "$windspeed km/h"
         )
     }
 }
