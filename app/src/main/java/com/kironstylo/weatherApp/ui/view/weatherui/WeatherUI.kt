@@ -1,17 +1,27 @@
 package com.kironstylo.weatherApp.ui.view.weatherui
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -25,8 +35,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
@@ -38,15 +50,26 @@ import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 
 @Composable
 fun WeatherScreen(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
+    val isCardLoading by weatherViewModel.weatherCardLoading.observeAsState(initial = true)
     Column(
         modifier =
         Modifier
             .fillMaxSize()
             .background(Color(0xFFACBDBA)),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = if (isCardLoading) Arrangement.Center else Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WeatherInfoCard(timeViewModel, weatherViewModel)
+        if (isCardLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(200.dp),
+                color = Color(0xFFB58FE7),
+                trackColor = Color(0xFFA599B5)
+
+            )
+        } else {
+            WeatherInfoCard(timeViewModel, weatherViewModel)
+            HourlyWeatherBox(weatherViewModel)
+        }
     }
 }
 
@@ -74,7 +97,10 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).description,
+                Weather.getWeatherNameByCode(
+                    weatherInfo.weatherCode,
+                    weatherInfo.weatherTime24
+                ).description,
                 Modifier.padding(top = 18.dp),
                 style = TextStyle(
                     fontSize = 24.sp,
@@ -82,7 +108,12 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
                 )
             )
             Image(
-                painter = painterResource(id = Weather.getWeatherNameByCode(weatherInfo.weatherCode, weatherInfo.weatherTime24).icon),
+                painter = painterResource(
+                    id = Weather.getWeatherNameByCode(
+                        weatherInfo.weatherCode,
+                        weatherInfo.weatherTime24
+                    ).icon
+                ),
                 modifier = Modifier.size(120.dp),
                 contentDescription = ""
             )
@@ -94,15 +125,25 @@ fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewM
                     fontWeight = FontWeight.Medium
                 )
             )
-            MinMaxTemperatureInfo(weatherInfo.weatherMaxTemperature, weatherInfo.weatherMinTemperature)
-            ExtraWeatherInfo(weatherInfo.weatherPrecipitaion, weatherInfo.weatherHumidity, weatherInfo.weatherWindspeed)
+            MinMaxTemperatureInfo(
+                weatherInfo.weatherMaxTemperature,
+                weatherInfo.weatherMinTemperature
+            )
+            ExtraWeatherInfo(
+                weatherInfo.weatherPrecipitaion,
+                weatherInfo.weatherHumidity,
+                weatherInfo.weatherWindspeed
+            )
+
         }
     }
+
 }
 
+
 @Composable
-fun ExtraWeatherInfo(precipitationProb: Int, humidity: Int, windspeed: Double ) {
-    Row (modifier = Modifier.padding(4.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)){
+fun ExtraWeatherInfo(precipitationProb: Int, humidity: Int, windspeed: Double) {
+    Row(modifier = Modifier.padding(4.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
         ExtraWeatherCard(
             "Rain",
             {
@@ -168,7 +209,7 @@ fun DateTimeText(timeZone: DateTimeFormatted) {
 }
 
 @Composable
-fun MinMaxTemperatureInfo(maxTemp: Double, minTemp:Double) {
+fun MinMaxTemperatureInfo(maxTemp: Double, minTemp: Double) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         MinTempInfo(minTemp)
         MaxTempInfo(maxTemp)
@@ -201,4 +242,80 @@ fun MaxTempInfo(maxTemp: Double) {
             }
         }
     )
+}
+
+
+@Composable
+fun HourlyWeatherBox(weatherViewModel: WeatherViewModel) {
+    val hourWeatherInfo: List<WeatherInfo> by weatherViewModel.hourWeatherInfo.observeAsState(
+        initial = listOf()
+    )
+    Column(
+        modifier = Modifier
+            .width(390.dp)
+            .height(160.dp)
+            .padding(horizontal = 11.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text("Today", style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold))
+        HourlyWeatherCardList(hourWeatherInfo)
+    }
+}
+
+@Composable
+fun HourlyWeatherCardList(hourWeatherInfo: List<WeatherInfo>) {
+    LazyRow(
+        modifier = Modifier
+            .width(390.dp)
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(hourWeatherInfo) { hourWeather ->
+            HourlyWeatherCard(
+                weatherInfo = hourWeather
+            )
+        }
+    }
+}
+
+@Composable
+fun HourlyWeatherCard(weatherInfo: WeatherInfo) {
+    ElevatedCard(
+        modifier = Modifier
+            .width(85.dp)
+            .height(120.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFCDDDDD)
+        ),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
+        ) {
+            Text(
+                weatherInfo.weatherTime12,
+                style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Normal)
+            )
+            Image(
+                painterResource(
+                    id = Weather.getWeatherNameByCode(
+                        weatherInfo.weatherCode,
+                        weatherInfo.weatherTime24
+                    ).icon
+                ),
+                contentDescription = Weather.getWeatherNameByCode(
+                    weatherInfo.weatherCode,
+                    weatherInfo.weatherTime24
+                ).description,
+                modifier = Modifier.size(50.dp)
+            )
+            Text(
+                "${weatherInfo.weatherTemperature}",
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            )
+        }
+    }
 }

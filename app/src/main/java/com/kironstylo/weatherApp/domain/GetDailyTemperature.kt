@@ -9,11 +9,11 @@ class GetDailyTemperature @Inject constructor(
     private val getDateFormatter: GetDateFormatter
 ) {
 
-     operator fun invoke (weatherData: WeatherData, timezone: Timezone): WeatherInfo {
-         val hourlyDate = getDateFormatter(timezone.currentLocalTime, "yyyy-MM-dd'T'HH:00")
-         val dailyDate = getDateFormatter(timezone.currentLocalTime, "yyyy-MM-dd")
-         val time12 = getDateFormatter(timezone.currentLocalTime, "hh a")
-         val time24 = getDateFormatter.get24hour(timezone.currentLocalTime)
+     operator fun invoke (weatherData: WeatherData, currentTime: String): WeatherInfo {
+         val hourlyDate = getDateFormatter(currentTime, "yyyy-MM-dd'T'HH:00")
+         val dailyDate = getDateFormatter(currentTime, "yyyy-MM-dd")
+         val time12 = getDateFormatter(currentTime, "hh a")
+         val time24 = getDateFormatter.get24hour(currentTime)
 
 
          val hourlyIndex = weatherData.hourly.dates.indexOf(hourlyDate)
