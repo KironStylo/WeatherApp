@@ -29,15 +29,16 @@ class GeoViewModel @Inject constructor(
     val cityName : LiveData<String> = _cityName
 
      fun searchCity(cityName: String) {
-        //isVisibleCard.postValue(false)
         viewModelScope.launch {
             val result = getLocationUseCase(cityName)
-            Log.d("Location Data","Cities which match the name $cityName : ${result?.results}")
-            if(result!!.results.isNotEmpty()){
-                _cityList.value = result.results
-                //isVisibleList.postValue(true)
+            Log.d("Location Data","Cities which match the name $cityName : $result")
+            if(result != null){
+                if(!result.results.isNullOrEmpty())
+                    _cityList.value = result.results ?: listOf()
             }
-
+            else{
+                _cityList.value = listOf()
+            }
         }
     }
 
