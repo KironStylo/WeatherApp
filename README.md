@@ -1,6 +1,32 @@
 # WeatherApp
 Are you thinking of what the weather is like in some city? Well wonder no more, this app can tell you how the weather is over there.
 
+## Version Log
+At the time of development, I used XML to design the App's UI. I didn't add new features until now I decided to work
+from where I left off. This project now implements Jetpack Compose for all UI components in the App. Due to that, I had 
+to migrate to new current version catalog system to add dependencies using Gradle. I had a difficult time trying to get 
+Dagger-Hilt to work as soon as I updated Android Studio since there would be an error caused by Kapt, but I found this useful
+post on [Stack Overflow](https://stackoverflow.com/questions/71525731/java-lang-illegalaccesserror-class-org-jetbrains-kotlin-kapt3-base-kaptcontext)
+which could help anyone who comes across this issue.
+
+### Version 1.0
+This version had the following features:
+* Search up to 10 cities
+* Discover the time and temperature of the city at the time of the search
+* Display an icon according to the time whether it's night or day
+
+### Version 2.0
+This version has the following features:
+* Two screens: A search-city screen and weather-info screen.
+* Discover weather information such as:
+  * Weather name, weather icon, current temperature, current time, min and max temperatures, rain probability, humidity, and wind speed.
+  * A list of today's temperature for every hour with a weather icon.
+
+I'll improve the following things in the near future:
++ The search screen will be more intuitive: You will have a checkbox near the city you select and a button to confirm that city you chose.
++ Regarding weather icons, I might use a different method to display them since I don't think it's a good idea to store all icons in the drawable folder.
++ Regarding code optimizations, I might use a different approach to MVVM architectures since all view models are injected in my views for previewing and UI tests.
+
 ## How can I use this app?
 It's as simple as typing the name of a place, pushing a button, searching the place with that name
 associated with it, tapping it, and getting information about that place such as the time, and temperature.
