@@ -1,23 +1,32 @@
 package com.kironstylo.weatherApp.ui.viewModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
+import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
+import com.kironstylo.weatherApp.domain.GetFormattedDateUseCase
 import com.kironstylo.weatherApp.domain.GetTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.TimeZone
 import javax.inject.Inject
 
 @HiltViewModel
 class TimeViewModel @Inject constructor(
     private val locationProvider: LocationProvider,
-    private val getTimeUseCase: GetTimeUseCase
+    private val getTimeUseCase: GetTimeUseCase,
+    private val getFormattedDateUseCase: GetFormattedDateUseCase
 ): ViewModel(){
 
     val timeModel = MutableLiveData<Timezone>()
+
+    private val _timeZone = MutableLiveData<DateTimeFormatted>()
+    val timeZone : LiveData<DateTimeFormatted> = _timeZone
+
 
 
     fun getTimeZone(){
@@ -31,10 +40,9 @@ class TimeViewModel @Inject constructor(
                 val result = getTimeUseCase(location)
 
                 if(result != null){
-                    timeModel.postValue(result)
+                    Log.d("TimeViewModel", "Time is ${result.currentLocalTime}")
+                    _timeZone.value = getFormattedDateUseCase(result)
                 }
-
-
             }
         }
     }
