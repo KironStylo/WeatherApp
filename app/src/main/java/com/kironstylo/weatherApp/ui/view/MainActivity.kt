@@ -2,8 +2,6 @@ package com.kironstylo.weatherApp.ui.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -11,18 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.kironstylo.weatherApp.Adapter.ResultAdapter
-import com.kironstylo.weatherApp.R
-import com.kironstylo.weatherApp.data.model.GeoLocation.Result
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
 import com.kironstylo.weatherApp.ui.view.searchui.CityScreen
 import com.kironstylo.weatherApp.ui.view.weatherui.WeatherScreen
@@ -30,8 +19,6 @@ import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
