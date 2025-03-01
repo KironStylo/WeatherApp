@@ -1,6 +1,5 @@
 package com.kironstylo.weatherApp.data.network.Geolocation
 
-import com.kironstylo.weatherApp.core.RetrofitHelper
 import com.kironstylo.weatherApp.data.model.GeoLocation.LocationData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
