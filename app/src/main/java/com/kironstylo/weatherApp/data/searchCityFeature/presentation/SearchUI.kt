@@ -1,4 +1,5 @@
-package com.kironstylo.weatherApp.ui.view.searchui
+
+package com.kironstylo.weatherApp.data.searchCityFeature.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,23 +24,17 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kironstylo.weatherApp.data.model.GeoLocation.Result
-import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
 
 @Composable
 fun CityScreen(geoViewModel: GeoViewModel, onClick: () -> Unit) {
@@ -139,7 +132,7 @@ fun CityButton(onButtonPressed: () -> Unit) {
 
 @Composable
 fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
-    val cityList: List<Result> by geoViewModel.cityList.observeAsState(initial = listOf())
+    val cityList: List<Geolocation> by geoViewModel.cityList.observeAsState(initial = listOf())
     val rvState = rememberLazyListState()
     LazyColumn(
         state = rvState,
@@ -159,7 +152,7 @@ fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
 }
 
 @Composable
-fun CityResultCard(city: Result, onClick: (Result) -> Unit) {
+fun CityResultCard(city: Geolocation, onClick: (Geolocation) -> Unit) {
     Column(
         modifier = Modifier
             .background(Color.White)
