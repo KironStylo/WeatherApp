@@ -5,13 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
-import com.kironstylo.weatherApp.data.model.Weather.Temperature
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
 import com.kironstylo.weatherApp.domain.GetDailyTemperature
 import com.kironstylo.weatherApp.domain.GetHourTemperature
-import com.kironstylo.weatherApp.domain.GetTemperatureUseCase
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,7 +20,7 @@ class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getDailyTemperature: GetDailyTemperature,
     private val getHourTemperature: GetHourTemperature,
-    private val locationProvider:  LocationProvider,
+    private val locationProvider: LocationProvider,
     private val timeProvider: TimeProvider
 ): ViewModel() {
 

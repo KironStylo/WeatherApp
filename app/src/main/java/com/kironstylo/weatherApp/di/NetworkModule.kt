@@ -1,7 +1,7 @@
 package com.kironstylo.weatherApp.di
 
 import com.kironstylo.weatherApp.data.network.Forecast.WeatherApiClient
-import com.kironstylo.weatherApp.data.network.Geolocation.GeoApiClient
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.GeoApiClient
 import com.kironstylo.weatherApp.data.network.Timezone.TimeApiClient
 import dagger.Module
 import dagger.Provides
@@ -9,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -51,7 +50,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGeoApiClient(@Named("GeoApi")retrofit: Retrofit):GeoApiClient{
+    fun provideGeoApiClient(@Named("GeoApi")retrofit: Retrofit): GeoApiClient {
         return retrofit.create(GeoApiClient::class.java)
     }
 
