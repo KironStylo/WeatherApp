@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.domain.GetFormattedDateUseCase
 import com.kironstylo.weatherApp.domain.GetTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,13 +32,20 @@ class TimeViewModel @Inject constructor(
 
     fun getTimeZone(){
         viewModelScope.launch{
-            val locationData = locationProvider.location
+            val locationData = locationProvider.locationList
             val index = locationProvider.index
-            Log.d("TimeViewModel","Los datos de localizacion son"+ (locationData?.results?.get(0)?.name))
-            if(locationData?.results?.isNotEmpty() == true && index != null){
-                val location = locationData.results[index]
+            Log.d("TimeViewModel","Los datos de localizacion son"+ (locationData?.get(0)?.name ?: ""))
 
-                val result = getTimeUseCase(location)
+            if(locationData?.isNotEmpty()== true && index != null){
+                val location = locationData[index]
+                val geoLocation: GeolocationDto = GeolocationDto(
+                    location.name,
+                    location.country,
+                    location.alias,
+                    location.latitude,
+                    location.longitude
+                )
+                val result = getTimeUseCase(geoLocation)
 
                 if(result != null){
                     Log.d("TimeViewModel", "Time is ${result.currentLocalTime}")

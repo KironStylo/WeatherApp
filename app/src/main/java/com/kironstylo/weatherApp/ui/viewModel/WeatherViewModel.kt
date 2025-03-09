@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.domain.GetDailyTemperature
 import com.kironstylo.weatherApp.domain.GetHourTemperature
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
@@ -39,13 +40,20 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
 
             _weatherCardLoading.value = true
-            val locationData = locationProvider.location
+            val locationData = locationProvider.locationList
             val index = locationProvider.index
-            Log.d("WeatherViewModel","Los datos de localizacion son"+ (locationData?.results?.get(0)?.name))
+            Log.d("WeatherViewModel","Los datos de localizacion son"+ (locationData?.get(0)?.name))
 
-            if(locationData?.results?.isNotEmpty() == true && index != null){
-                val location = locationData.results[index]
-                val result= getWeatherUseCase(location)
+            if(locationData?.isNotEmpty() == true && index != null){
+                val location = locationData[index]
+                val geoLocation: GeolocationDto = GeolocationDto(
+                    location.name,
+                    location.country,
+                    location.alias,
+                    location.latitude,
+                    location.longitude
+                )
+                val result= getWeatherUseCase(geoLocation)
 
                 Log.d("WeatherViewModel", "Localizacion: $location")
                 Log.d("WeatherViewModel","Temperatura:"+result.toString())
