@@ -5,13 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.data.model.GeoLocation.LocationProvider
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
-import com.kironstylo.weatherApp.data.model.Weather.Temperature
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
+import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.domain.GetDailyTemperature
 import com.kironstylo.weatherApp.domain.GetHourTemperature
-import com.kironstylo.weatherApp.domain.GetTemperatureUseCase
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getDailyTemperature: GetDailyTemperature,
     private val getHourTemperature: GetHourTemperature,
-    private val locationProvider:  LocationProvider,
+    private val locationProvider: LocationProvider,
     private val timeProvider: TimeProvider
 ): ViewModel() {
 
@@ -41,13 +40,20 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
 
             _weatherCardLoading.value = true
-            val locationData = locationProvider.location
+            val locationData = locationProvider.locationList
             val index = locationProvider.index
-            Log.d("WeatherViewModel","Los datos de localizacion son"+ (locationData?.results?.get(0)?.name))
+            Log.d("WeatherViewModel","Los datos de localizacion son"+ (locationData?.get(0)?.name))
 
-            if(locationData?.results?.isNotEmpty() == true && index != null){
-                val location = locationData.results[index]
-                val result= getWeatherUseCase(location)
+            if(locationData?.isNotEmpty() == true && index != null){
+                val location = locationData[index]
+                val geoLocation: GeolocationDto = GeolocationDto(
+                    location.name,
+                    location.country,
+                    location.alias,
+                    location.latitude,
+                    location.longitude
+                )
+                val result= getWeatherUseCase(geoLocation)
 
                 Log.d("WeatherViewModel", "Localizacion: $location")
                 Log.d("WeatherViewModel","Temperatura:"+result.toString())

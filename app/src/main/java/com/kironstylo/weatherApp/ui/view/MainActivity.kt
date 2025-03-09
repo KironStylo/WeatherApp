@@ -13,9 +13,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
-import com.kironstylo.weatherApp.ui.view.searchui.CityScreen
+import com.kironstylo.weatherApp.data.searchCityFeature.presentation.CityScreen
 import com.kironstylo.weatherApp.ui.view.weatherui.WeatherScreen
-import com.kironstylo.weatherApp.ui.viewModel.GeoViewModel
+import com.kironstylo.weatherApp.data.searchCityFeature.presentation.GeoViewModel
 import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
 import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
