@@ -137,7 +137,7 @@ fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
     LazyColumn(
         state = rvState,
         modifier = Modifier
-            .height(225.dp)
+            .height(425.dp)
             .fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 9.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
