@@ -1,5 +1,5 @@
 
-package com.kironstylo.weatherApp.data.searchCityFeature.presentation
+package com.kironstylo.weatherApp.searchCityFeature.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,8 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 
 @Composable
 fun CityScreen(geoViewModel: GeoViewModel, onClick: () -> Unit) {

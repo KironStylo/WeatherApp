@@ -1,7 +1,7 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto
+package com.kironstylo.weatherApp.searchCityFeature.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 
 data class GeolocationDto(
     @SerializedName("name") val name: String,
@@ -10,7 +10,7 @@ data class GeolocationDto(
     @SerializedName("latitude") val latitude: Double,
     @SerializedName("longitude") val longitude: Double
 ){
-    fun toGeolocation(): Geolocation{
+    fun toGeolocation(): Geolocation {
         return Geolocation(
             name = name,
             country = country,

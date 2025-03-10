@@ -1,6 +1,6 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto
+package com.kironstylo.weatherApp.searchCityFeature.data.remote.dto
 
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import javax.inject.Inject
 import javax.inject.Singleton
 

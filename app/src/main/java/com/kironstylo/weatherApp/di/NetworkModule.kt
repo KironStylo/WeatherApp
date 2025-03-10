@@ -1,7 +1,7 @@
 package com.kironstylo.weatherApp.di
 
 import com.kironstylo.weatherApp.data.network.Forecast.WeatherApiClient
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.GeoApiClient
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoApiClient
 import com.kironstylo.weatherApp.data.network.Timezone.TimeApiClient
 import dagger.Module
 import dagger.Provides

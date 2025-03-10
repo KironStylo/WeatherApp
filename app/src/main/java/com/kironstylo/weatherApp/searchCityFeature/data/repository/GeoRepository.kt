@@ -1,10 +1,10 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.repository
+package com.kironstylo.weatherApp.searchCityFeature.data.repository
 
 import android.util.Log
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationDataDto
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.GeoService
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationDataDto
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationProvider
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoService
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import javax.inject.Inject
 
 class GeoRepository @Inject constructor(private val api: GeoService, private val locationProvider: LocationProvider){

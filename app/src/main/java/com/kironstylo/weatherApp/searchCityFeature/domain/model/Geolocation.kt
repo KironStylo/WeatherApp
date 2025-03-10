@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.domain.model
+package com.kironstylo.weatherApp.searchCityFeature.domain.model
 
 data class Geolocation(
     val name: String = "",

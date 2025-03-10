@@ -1,6 +1,6 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.remote
+package com.kironstylo.weatherApp.searchCityFeature.data.remote
 
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

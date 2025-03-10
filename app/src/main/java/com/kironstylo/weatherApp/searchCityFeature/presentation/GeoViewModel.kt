@@ -1,14 +1,14 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.presentation
+package com.kironstylo.weatherApp.searchCityFeature.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.use_case.GetLocationUseCase
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationProvider
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.domain.use_case.GetLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

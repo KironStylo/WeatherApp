@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.TimeProvider
 import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.domain.GetDailyTemperature
 import com.kironstylo.weatherApp.domain.GetHourTemperature
 import com.kironstylo.weatherApp.domain.GetWeatherUseCase

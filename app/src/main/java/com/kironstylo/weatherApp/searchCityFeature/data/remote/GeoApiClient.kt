@@ -1,6 +1,6 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.remote
+package com.kironstylo.weatherApp.searchCityFeature.data.remote
 
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationDataDto
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationDataDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

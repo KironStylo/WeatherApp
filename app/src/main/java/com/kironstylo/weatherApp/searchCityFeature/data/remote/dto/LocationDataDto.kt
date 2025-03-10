@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto
+package com.kironstylo.weatherApp.searchCityFeature.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

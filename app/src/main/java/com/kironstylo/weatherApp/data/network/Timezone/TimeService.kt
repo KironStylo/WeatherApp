@@ -1,6 +1,6 @@
 package com.kironstylo.weatherApp.data.network.Timezone
 
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

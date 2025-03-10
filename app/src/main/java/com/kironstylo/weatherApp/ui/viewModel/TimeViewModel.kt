@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.LocationProvider
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Timezone.Timezone
-import com.kironstylo.weatherApp.data.searchCityFeature.data.remote.dto.GeolocationDto
-import com.kironstylo.weatherApp.data.searchCityFeature.domain.model.Geolocation
+import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
+import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.domain.GetFormattedDateUseCase
 import com.kironstylo.weatherApp.domain.GetTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
