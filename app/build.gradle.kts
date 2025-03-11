@@ -72,6 +72,7 @@ dependencies {
 
     // Dependency Injection
     implementation(libs.hilt.android)
+    implementation(libs.androidx.ui.text.android)
     debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.hilt.android.compiler)
 
