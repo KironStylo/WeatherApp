@@ -10,7 +10,7 @@ interface WeatherApiClient {
     suspend fun getWeatherData(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("hourly") hourly: List<String> = listOf("temperature_2m","weather_code","relative_humidity_2m","precipitation_probability"),
+        @Query("hourly") hourly: List<String> = listOf("temperature_2m","weather_code","relative_humidity_2m","precipitation_probability","wind_speed_10m"),
         @Query("daily") daily: List<String> = listOf("temperature_2m_min","temperature_2m_max"),
         @Query("timezone") timezone: String = "auto"
     ): Response<WeatherDataDto>
