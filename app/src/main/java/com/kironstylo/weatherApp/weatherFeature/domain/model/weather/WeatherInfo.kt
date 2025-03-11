@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.data.model.Weather
+package com.kironstylo.weatherApp.weatherFeature.domain.model.weather
 
 data class WeatherInfo(
     val weatherCode: Int = 1,
