@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationProvider
 import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.searchCityFeature.domain.use_case.GetLocationUseCase
@@ -15,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GeoViewModel @Inject constructor(
-    private val getLocationUseCase : GetLocationUseCase,
-    private val locationProvider: LocationProvider
+    private val getLocationUseCase : GetLocationUseCase
 ): ViewModel() {
 
     private val _cityList = MutableLiveData<List<Geolocation>>()
@@ -35,12 +33,4 @@ class GeoViewModel @Inject constructor(
     fun onCityNameChanged(cityName : String){
         _cityName.value = cityName
     }
-
-    fun findCityIndex(geoLocationDataDto: Geolocation){
-        //cityName.postValue(result.name)
-        Log.d("Location Index","New city has been set to ${geoLocationDataDto.name}")
-            locationProvider.locationList?.indexOf(geoLocationDataDto) ?: 0
-
-    }
-
 }
