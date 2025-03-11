@@ -1,9 +1,8 @@
-package com.kironstylo.weatherApp.data.model.Timezone
+package com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.dto
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
-data class Timezone(
+data class TimezoneDto(
     @SerializedName("currentLocalTime")
     val currentLocalTime: String
 )
