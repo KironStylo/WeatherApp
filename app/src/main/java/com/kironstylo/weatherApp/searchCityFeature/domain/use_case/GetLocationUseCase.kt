@@ -1,7 +1,6 @@
 package com.kironstylo.weatherApp.searchCityFeature.domain.use_case
 
 import com.kironstylo.weatherApp.searchCityFeature.data.repository.GeoRepository
-import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.LocationDataDto
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import javax.inject.Inject
 

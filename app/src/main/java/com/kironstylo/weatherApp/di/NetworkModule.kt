@@ -1,8 +1,13 @@
 package com.kironstylo.weatherApp.di
 
-import com.kironstylo.weatherApp.data.network.Forecast.WeatherApiClient
+import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.WeatherApiClient
 import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoApiClient
-import com.kironstylo.weatherApp.data.network.Timezone.TimeApiClient
+import com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.TimeApiClient
+import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepository
+import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepository
+import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetTimeUseCase
+import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetWeatherUseCase
+import com.kironstylo.weatherApp.weatherFeature.domain.use_case.WeatherUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,13 +61,22 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideWeatherApiClient(@Named("WeatherApi")retrofit: Retrofit):WeatherApiClient{
+    fun provideWeatherApiClient(@Named("WeatherApi")retrofit: Retrofit): WeatherApiClient {
         return retrofit.create(WeatherApiClient::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideTimeApiClient(@Named("TimeApi")retrofit: Retrofit): TimeApiClient{
+    fun provideTimeApiClient(@Named("TimeApi")retrofit: Retrofit): TimeApiClient {
         return retrofit.create(TimeApiClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherUseCases(timeRepository: TimeRepository, weatherRepository: WeatherRepository): WeatherUseCases{
+        return WeatherUseCases(
+            GetTimeUseCase(timeRepository),
+            GetWeatherUseCase(weatherRepository)
+        )
     }
 }
