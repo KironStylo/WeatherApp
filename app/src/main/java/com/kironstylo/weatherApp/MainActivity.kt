@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.ui.view
+package com.kironstylo.weatherApp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,10 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kironstylo.weatherApp.databinding.ActivityMainBinding
 import com.kironstylo.weatherApp.searchCityFeature.presentation.CityScreen
-import com.kironstylo.weatherApp.ui.view.weatherui.WeatherScreen
+import com.kironstylo.weatherApp.weatherFeature.presentation.WeatherScreen
 import com.kironstylo.weatherApp.searchCityFeature.presentation.GeoViewModel
-import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
-import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
+import com.kironstylo.weatherApp.weatherFeature.presentation.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,9 +27,6 @@ class MainActivity : AppCompatActivity() {
     private val weatherViewModel: WeatherViewModel by viewModels()
 
     private val geoViewModel: GeoViewModel by viewModels()
-
-    private val timeViewModel: TimeViewModel by viewModels()
-
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,13 +152,12 @@ class MainActivity : AppCompatActivity() {
         ) {
             composable("Screen1") {
                 CityScreen(geoViewModel){
+                    weatherViewModel.getWeather(it)
                     navController.navigate("Screen2")
-                    timeViewModel.getTimeZone()
-                    weatherViewModel.getWeather()
                 }
             }
             composable("Screen2"){
-                WeatherScreen(timeViewModel, weatherViewModel)
+                WeatherScreen(weatherViewModel)
             }
         }
 
@@ -171,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     @Preview
     @Composable
     fun WeatherScreenPreview() {
-        WeatherScreen(timeViewModel, weatherViewModel)
+        WeatherScreen(weatherViewModel)
     }
 }
 

@@ -1,12 +1,9 @@
-package com.kironstylo.weatherApp.ui.view.weatherui
+package com.kironstylo.weatherApp.weatherFeature.presentation
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,21 +30,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
-import com.kironstylo.weatherApp.data.model.Timezone.DateTimeFormatted
 import com.kironstylo.weatherApp.data.model.Weather.Weather
-import com.kironstylo.weatherApp.data.model.Weather.WeatherInfo
-import com.kironstylo.weatherApp.ui.viewModel.TimeViewModel
-import com.kironstylo.weatherApp.ui.viewModel.WeatherViewModel
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
+import java.time.LocalDateTime
 
 @Composable
-fun WeatherScreen(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
+fun WeatherScreen(weatherViewModel: WeatherViewModel) {
     val isCardLoading by weatherViewModel.weatherCardLoading.observeAsState(initial = true)
     Column(
         modifier =
@@ -67,15 +58,16 @@ fun WeatherScreen(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewMod
 
             )
         } else {
-            WeatherInfoCard(timeViewModel, weatherViewModel)
+            WeatherInfoCard(weatherViewModel)
             HourlyWeatherBox(weatherViewModel)
         }
     }
 }
 
 @Composable
-fun WeatherInfoCard(timeViewModel: TimeViewModel, weatherViewModel: WeatherViewModel) {
-    val timeZone: DateTimeFormatted by timeViewModel.timeZone.observeAsState(initial = DateTimeFormatted())
+fun WeatherInfoCard(weatherViewModel: WeatherViewModel) {
+    val timeZone: WeatherViewModel.DateTime by weatherViewModel.timeZoneInfo.observeAsState(initial = WeatherViewModel.DateTime(
+        LocalDateTime.now()))
     val weatherInfo: WeatherInfo by weatherViewModel.weatherInfo.observeAsState(initial = WeatherInfo())
     ElevatedCard(
         modifier = Modifier
@@ -192,7 +184,7 @@ fun ExtraWeatherCard(title: String, image: @Composable () -> Unit, value: String
 }
 
 @Composable
-fun DateTimeText(timeZone: DateTimeFormatted) {
+fun DateTimeText(timeZone: WeatherViewModel.DateTime) {
     val textStyle = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal
@@ -203,7 +195,7 @@ fun DateTimeText(timeZone: DateTimeFormatted) {
             thickness = 1.dp,
             color = Color(0xFF051014)
         )
-        Text(timeZone.time ?: "", style = textStyle)
+        Text(timeZone.hour ?: "", style = textStyle)
 
     }
 }

@@ -37,7 +37,7 @@ import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDt
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 
 @Composable
-fun CityScreen(geoViewModel: GeoViewModel, onClick: () -> Unit) {
+fun CityScreen(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,7 +131,7 @@ fun CityButton(onButtonPressed: () -> Unit) {
 }
 
 @Composable
-fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
+fun Result(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
     val cityList: List<Geolocation> by geoViewModel.cityList.observeAsState(initial = listOf())
     val rvState = rememberLazyListState()
     LazyColumn(
@@ -144,8 +144,7 @@ fun Result(geoViewModel: GeoViewModel, onClick: () -> Unit) {
     ) {
         items(cityList) { city ->
             CityResultCard(city) {
-                geoViewModel.findCityIndex(city)
-                onClick()
+                onClick(it)
             }
         }
     }
