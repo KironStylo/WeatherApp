@@ -1,8 +1,8 @@
-package com.kironstylo.weatherApp.data.model.Weather
+package com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Hourly(
+data class HourlyDto(
     @SerializedName("time")
     val dates: List<String>,
     @SerializedName("temperature_2m")
