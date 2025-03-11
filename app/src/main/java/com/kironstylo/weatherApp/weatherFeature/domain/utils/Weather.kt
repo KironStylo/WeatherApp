@@ -1,8 +1,6 @@
-package com.kironstylo.weatherApp.data.model.Weather
+package com.kironstylo.weatherApp.weatherFeature.domain.utils
 
 import com.kironstylo.weatherApp.R
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 object Weather {
 

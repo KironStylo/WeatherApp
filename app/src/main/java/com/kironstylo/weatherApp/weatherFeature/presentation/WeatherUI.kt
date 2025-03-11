@@ -35,7 +35,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
-import com.kironstylo.weatherApp.data.model.Weather.Weather
+import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
 import java.time.LocalDateTime
 
