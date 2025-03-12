@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private val geoViewModel: GeoViewModel by viewModels()
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
