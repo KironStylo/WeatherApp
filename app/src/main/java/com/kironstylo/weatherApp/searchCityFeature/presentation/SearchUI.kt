@@ -1,4 +1,3 @@
-
 package com.kironstylo.weatherApp.searchCityFeature.presentation
 
 import androidx.compose.foundation.background
@@ -24,6 +23,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +39,11 @@ import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDt
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 
 @Composable
-fun CityScreen(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
+fun CityScreen(
+    locationUIState: LocationUIState,
+    onEvent: (LocationEvent) -> Unit,
+    onClick: (Geolocation) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,14 +54,13 @@ fun CityScreen(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
             alignment = Alignment.Top
         )
     ) {
-        Search(geoViewModel)
-        Result(geoViewModel, onClick)
+        Search(onEvent)
+        Result(locationUIState, onClick)
     }
 }
 
 @Composable
-fun Search(geoViewModel: GeoViewModel) {
-    val cityName: String by geoViewModel.cityName.observeAsState(initial = "")
+fun Search(onEvent: (LocationEvent) -> Unit) {
     Column(
         modifier = Modifier
             .padding(top = 16.dp, start = 8.dp, end = 8.dp)
@@ -66,12 +71,10 @@ fun Search(geoViewModel: GeoViewModel) {
         verticalArrangement = Arrangement.Center
     ) {
         CityTitle(Modifier.align(Alignment.Start))
-        City(cityName) {
-            geoViewModel.onCityNameChanged(it)
-        }
-        CityButton {
-            geoViewModel.searchCity(cityName)
-        }
+        City(onEvent)
+//        CityButton {
+//            geoViewModel.searchCity(cityName)
+//        }
     }
 }
 
@@ -92,11 +95,15 @@ fun CityTitle(modifier: Modifier) {
 }
 
 @Composable
-fun City(cityName: String, onTextChanged: (String) -> Unit) {
+fun City(onEvent: (LocationEvent) -> Unit) {
+    var cityName by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
         value = cityName,
         maxLines = 1,
-        onValueChange = { onTextChanged(it) },
+        onValueChange = {
+            cityName = it
+            onEvent(LocationEvent.SearchEvent(it))
+        },
         label = {
             Text(text = "Ingresa nombre de ciudad")
         },
@@ -131,8 +138,7 @@ fun CityButton(onButtonPressed: () -> Unit) {
 }
 
 @Composable
-fun Result(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
-    val cityList: List<Geolocation> by geoViewModel.cityList.observeAsState(initial = listOf())
+fun Result(locationUIState: LocationUIState, onClick: (Geolocation) -> Unit) {
     val rvState = rememberLazyListState()
     LazyColumn(
         state = rvState,
@@ -142,7 +148,7 @@ fun Result(geoViewModel: GeoViewModel, onClick: (Geolocation) -> Unit) {
         contentPadding = PaddingValues(horizontal = 9.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(cityList) { city ->
+        items(locationUIState.geolocationItems) { city ->
             CityResultCard(city) {
                 onClick(it)
             }

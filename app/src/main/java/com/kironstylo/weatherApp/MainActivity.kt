@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     private val geoViewModel: GeoViewModel by viewModels()
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -146,12 +147,16 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun App() {
         val navController = rememberNavController()
+        val locationState by geoViewModel.locationState.collectAsState()
         NavHost(
             navController = navController,
             startDestination = "Screen1"
         ) {
             composable("Screen1") {
-                CityScreen(geoViewModel){
+                CityScreen(
+                    locationUIState = locationState,
+                    onEvent = geoViewModel::onEvent
+                    ){
                     weatherViewModel.getWeather(it)
                     navController.navigate("Screen2")
                 }
