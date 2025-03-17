@@ -26,39 +26,40 @@ import com.kironstylo.weatherApp.searchCityFeature.presentation.LocationEvent
 
 @Composable
 fun SearchView(
+    query: String,
     modifier: Modifier = Modifier,
-    onEvent:(LocationEvent) -> Unit
+    onEvent:(String) -> Unit,
 ){
     Column (
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.SpaceBetween
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(
+            space = 0.dp
+        )
     ) {
         TitleText()
-        FindCity(onEvent)
+        FindCity(query, onEvent)
     }
 }
 
 @Composable
 fun TitleText(){
-    Text(
+    CustomTitleText(
         "Ciudad a buscar",
-        style = TextStyle(
+        textStyle = TextStyle(
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp
-        )
+        ),
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun FindCity(onEvent:(LocationEvent)->Unit){
-    var query by rememberSaveable { mutableStateOf("") }
+fun FindCity(query:String,onEvent:(String)->Unit){
     OutlinedTextField(
         query,
         {
-            query = it
-            onEvent(LocationEvent.SearchEvent(query))
+            onEvent(it)
         },
         label = {
             Text("Ingrese nombre de ciudad")
@@ -86,7 +87,10 @@ fun SearchViewPreview(){
             .fillMaxSize(),
         containerColor = Color(0xFFACBDBA)
     ) { innerPadding ->
-        SearchView (Modifier.padding(innerPadding))
+        SearchView (
+            "",
+            Modifier.padding(innerPadding)
+        )
         {  }
     }
 }
