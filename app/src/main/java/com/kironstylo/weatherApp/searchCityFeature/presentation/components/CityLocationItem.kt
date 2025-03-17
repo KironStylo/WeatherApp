@@ -1,6 +1,7 @@
 package com.kironstylo.weatherApp.searchCityFeature.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,8 @@ import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 @Composable
 fun CityLocationItem(
     modifier: Modifier = Modifier,
-    geolocation: Geolocation
+    geolocation: Geolocation,
+    onClick: (Geolocation) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -40,6 +42,9 @@ fun CityLocationItem(
             .height(75.dp)
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 8.dp)
+            .clickable {
+                onClick(geolocation)
+            }
     ){
         Column (
             modifier = Modifier
@@ -116,6 +121,8 @@ fun CityLocationItemPreview(){
                 latitude = 2.0,
                 longitude = 2.0
             )
-        )
+        ){
+
+        }
     }
 }
