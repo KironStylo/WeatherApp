@@ -6,10 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,9 +40,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Surface() {
+            Scaffold(
+                modifier = Modifier
+                    .fillMaxSize(),
+                containerColor = Color(0xFFACBDBA)
+            ) { innerPadding ->
                 //CityScreen(geoViewModel)
-                App()
+                App(Modifier.padding(innerPadding))
             }
         }
 
@@ -145,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 //
 //    }
     @Composable
-    fun App() {
+    fun App(modifier: Modifier) {
         val navController = rememberNavController()
         val locationState by geoViewModel.locationState.collectAsState()
         NavHost(
@@ -154,6 +164,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             composable("Screen1") {
                 CityScreen(
+                    modifier = modifier,
                     locationUIState = locationState,
                     onEvent = geoViewModel::onEvent
                     ){
