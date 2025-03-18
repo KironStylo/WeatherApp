@@ -183,7 +183,7 @@ fun Result(locationUIState: LocationUIState, onClick: (Int) -> Unit) {
             .fillMaxHeight()
             .fillMaxWidth(),
         contentPadding = PaddingValues(),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(locationUIState.geolocationItems, key = {it.id}){ geolocation ->
             CityLocationItem(
@@ -214,6 +214,14 @@ fun SearchUIPreview() {
                         alias = "Alias",
                         latitude = 0.0,
                         longitude = 0.0
+                    ),
+                    Geolocation(
+                        id = 2,
+                        name = "City",
+                        country = "Country",
+                        alias = "Alias",
+                        latitude = 0.0,
+                        longitude = 0.0
                     )
                 ),
                 Geolocation(
@@ -224,7 +232,8 @@ fun SearchUIPreview() {
                     latitude = 0.0,
                     longitude = 0.0
                 ),
-                false
+                false,
+                searchComplete = true
             ),
             {}
         ) {
