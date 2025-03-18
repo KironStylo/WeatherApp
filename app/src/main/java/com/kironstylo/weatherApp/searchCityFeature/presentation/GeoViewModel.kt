@@ -28,21 +28,24 @@ class GeoViewModel @Inject constructor(
     private val _locationState = MutableStateFlow(LocationUIState())
     val locationState: StateFlow<LocationUIState> = _locationState.asStateFlow()
 
-    private val _cityName = MutableStateFlow("")
-    val cityName : StateFlow<String> = _cityName
-
     private var searchJob: Job? = null
 
     fun onEvent(event: LocationEvent){
         when(event){
             is LocationEvent.SearchEvent -> {
+                _locationState.value = locationState.value.copy(
+                    selectedItem = null
+                )
                 searchCity(event.query)
             }
-            is LocationEvent.ChooseCity -> TODO()
+            is LocationEvent.ChooseCity -> {
+                _locationState.value = locationState.value.copy(
+                    selectedItem = locationState.value.geolocationItems.find{it.id == event.geolocationId}
+                )
+            }
         }
     }
-     fun searchCity(cityName: String) {
-         _cityName.value = cityName
+     private fun searchCity(cityName: String) {
          searchJob?.cancel()
          searchJob = viewModelScope.launch{
              delay(300)
@@ -52,18 +55,25 @@ class GeoViewModel @Inject constructor(
                         is Resource.Loading -> {
                             _locationState.value = locationState.value.copy(
                                 geolocationItems = result.data ?: emptyList(),
+                                searchComplete = false,
+                                selectedItem = null,
                                 isLoading = true
                             )
                         }
                         is Resource.Success -> {
+                            Log.i("Successful search", "${result.data}")
                             _locationState.value = locationState.value.copy(
                                 geolocationItems = result.data ?: emptyList(),
+                                searchComplete = true,
+                                selectedItem = null,
                                 isLoading = false
                             )
                         }
                         is Resource.Error -> {
                             _locationState.value = locationState.value.copy(
                                 geolocationItems = result.data ?: emptyList(),
+                                searchComplete = true,
+                                selectedItem = null,
                                 isLoading = false
                             )
                         }
@@ -72,7 +82,4 @@ class GeoViewModel @Inject constructor(
          }
     }
 
-    fun onCityNameChanged(cityName : String){
-        _cityName.value = cityName
-    }
 }
