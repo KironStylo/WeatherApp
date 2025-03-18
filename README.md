@@ -58,20 +58,6 @@ This version has the following features:
   * Wind speed.
   * A list of today's temperature for every hour with a weather icon.
 
-### Some possible improvements for the app 🧰🪛
-I'll improve the following things in the near future:
-> 1) Add a UI component to show the weather name, max and min temperature, and day of the week at the end of the screen.
-> 2) I have planned to organize every folder so it follows a more structured clean architecture. I believe there should be a folder for
-     every feature and that folder should be divided by layers such as data, presentation and domain.
-> 3) The search screen will be more intuitive: You will have a checkbox near the city you select and a button to confirm that city you chose.
-> 4) Regarding weather icons, I might use a different method to display them since I don't think it's a good idea to store all icons in the drawable folder.
-> 5) Regarding code optimizations, I might use a different approach to MVVM architectures since all view models are injected in my views for previewing and UI tests.
-
-
-I think the second improvement on the list might take a while since it implies refactoring folders, 
-and making sure that the app still runs even after I'm done making all these changes. However, this is 
-so that the project follows a common project structure standard agreed on by the industry.  
-
 ### App software-details 🤖
 
 The app sends three API requests to two websites: Open-Meteo and Time Api
@@ -89,6 +75,22 @@ Finally, the app makes a last API request to obtain the weather of the city usin
 > This website provides weather data provided a location. This API call includes a variety of parameters to ensure weather information is completely shown on the app.
 
 Each website contains examples of how each API call should be made and you could always choose the amount of parameters in your search to your like.
+
+
+### Some possible improvements for the app 🧰🪛
+I'll improve the following things in the near future:
+> * Add a UI component to show the weather name, max and min temperature, and day of the week at the end of the screen.
+> * I am planning to add a Settings screen to allow users select app language, temperature and wind speed units.
+> * Regarding weather icons, I might use a different method to display them since I don't think it's a good idea to store all icons in the drawable folder.
+> * Regarding code optimizations, I might use a different approach to MVVM architectures since all view models are injected in my views for previewing and UI tests.
+
+This list is not sorted by improvement of most importance, I'm simply pointing out what improvements could be made to the app.
+
+# Completed improvements
+So far, I have managed to implement these things on the app:
+1) Create packages for specific app features and divide each package into three layers: presentation, domain, and data.
+2) Make Search screen more intuitive by adding a checkbox at the end of a city so users know from what city they're getting weather data.
+3) Search screen uses UIStates and UIEvents which are handled by the viewmodel. This means the screen can be previewed or tested.
 
 
 
