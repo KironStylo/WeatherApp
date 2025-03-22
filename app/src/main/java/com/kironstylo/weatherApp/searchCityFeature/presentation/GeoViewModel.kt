@@ -34,7 +34,8 @@ class GeoViewModel @Inject constructor(
         when(event){
             is LocationEvent.SearchEvent -> {
                 _locationState.value = locationState.value.copy(
-                    selectedItem = null
+                    selectedItem = null,
+                    searchComplete = false
                 )
                 searchCity(event.query)
             }
