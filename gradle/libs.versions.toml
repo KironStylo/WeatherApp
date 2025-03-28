@@ -23,6 +23,7 @@ uiToolingPreviewAndroid = "1.7.6"
 runtimeLivedata = "1.7.6"
 uiTooling = "1.7.6"
 uiTextAndroid = "1.7.8"
+kotlinSerialization = "1.8.0"
 
 
 [libraries]
@@ -53,6 +54,7 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 androidx-ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version.ref = "uiTextAndroid" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json"}
 
 [plugins]
 android-application = {id ="com.android.application", version.ref = "agp"}
