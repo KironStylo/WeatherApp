@@ -47,19 +47,15 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
     implementation(libs.appcompat)
     implementation(libs.material)
-
-
-    // Jetpack Compose libraries
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
 
 
     // ViewModel Dependencies
@@ -73,7 +69,6 @@ dependencies {
 
     // Dependency Injection
     implementation(libs.hilt.android)
-    debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.hilt.android.compiler)
 
     //Corrutinas
@@ -93,7 +88,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-
+    debugImplementation(libs.androidx.ui.tooling)
 }
 
 kapt {
