@@ -33,7 +33,8 @@ import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 fun CityLocationItem(
     modifier: Modifier = Modifier,
     geolocation: Geolocation,
-    onClick: (Geolocation) -> Unit
+    isSelected: Boolean = false,
+    onClick: (Int) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -42,8 +43,8 @@ fun CityLocationItem(
             .height(75.dp)
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 8.dp)
-            .clickable {
-                onClick(geolocation)
+            .clickable{
+                onClick(geolocation.id)
             }
     ){
         Column (
@@ -91,8 +92,10 @@ fun CityLocationItem(
             contentAlignment = Alignment.Center
         ){
             RadioButton(
-                selected = false,
-                onClick = {},
+                selected = isSelected,
+                onClick = {
+                    onClick(geolocation.id)
+                },
                 colors = RadioButtonDefaults.colors(
                     selectedColor = Color(0xFF8E4CE3),
                     unselectedColor = Color(0xFF8E4CE3)
@@ -112,15 +115,16 @@ fun CityLocationItemPreview(){
     ) {
         innerPadding ->
         CityLocationItem(
-            Modifier.padding(innerPadding),
-            Geolocation(
+            modifier = Modifier.padding(innerPadding),
+            geolocation = Geolocation(
                 id = 1,
                 name = "City",
                 country = "Country",
                 alias = "Alias",
                 latitude = 2.0,
                 longitude = 2.0
-            )
+            ),
+            isSelected = false
         ){
 
         }

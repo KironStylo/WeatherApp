@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -48,18 +48,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
-    implementation(libs.androidx.ui.tooling.preview.android)
 
-
-    // Jetpack Compose libraries
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.material3)
-    implementation(platform(libs.androidx.compose.bom))
 
     // ViewModel Dependencies
     implementation (libs.lifecycle.viewmodel.ktx)
@@ -72,27 +69,26 @@ dependencies {
 
     // Dependency Injection
     implementation(libs.hilt.android)
-    implementation(libs.androidx.ui.text.android)
-    debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.hilt.android.compiler)
 
     //Corrutinas
     implementation (libs.kotlinx.coroutines.android)
 
-    // Fragment
-    implementation (libs.fragment.ktx)
     // Activity
     implementation (libs.activity.ktx)
 
     // Navigation Dependency
     implementation(libs.androidx.navigation.compose)
 
+    // Kotlin Serialization
+    implementation(libs.kotlin.serialization)
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-
+    debugImplementation(libs.androidx.ui.tooling)
 }
 
 kapt {

@@ -1,40 +1,31 @@
 package com.kironstylo.weatherApp.searchCityFeature.presentation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,12 +33,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kironstylo.weatherApp.searchCityFeature.data.remote.dto.GeolocationDto
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.searchCityFeature.presentation.components.CityLocationItem
 import com.kironstylo.weatherApp.searchCityFeature.presentation.components.CustomTitleText
 import com.kironstylo.weatherApp.searchCityFeature.presentation.components.SearchView
-import com.kironstylo.weatherApp.searchCityFeature.presentation.components.TitleText
 
 @Composable
 fun CityScreen(
@@ -67,8 +56,8 @@ fun CityScreen(
         )
     ) {
         SearchView(
-            query,
             modifier = Modifier.weight(0.15f),
+            query = query,
             ) {
             query = it
             onEvent(LocationEvent.SearchEvent(query))
@@ -77,10 +66,13 @@ fun CityScreen(
             modifier = Modifier.weight(0.8f),
             query = query,
             locationUIState = locationUIState,
-            onClick = onClick
-        )
+        ){
+            onEvent(LocationEvent.ChooseCity(it))
+        }
         ConfirmButton(
-            modifier = Modifier.weight(0.15f)
+            locationUIState = locationUIState,
+            modifier = Modifier.weight(0.15f),
+            onClick = onClick
         )
     }
 }
@@ -90,7 +82,7 @@ fun Result(
     query: String = "",
     modifier: Modifier = Modifier,
     locationUIState: LocationUIState,
-    onClick: (Geolocation) -> Unit
+    onEvent: (Int) -> Unit
 ) {
     val noQuery = query.isBlank()
     val noResults = locationUIState.geolocationItems.isEmpty()
@@ -116,7 +108,7 @@ fun Result(
 
                 )
             }
-            else{
+            else if(locationUIState.searchComplete){
                 if(noResults){
                     CustomTitleText(
                         "No se encontraron resultados con el nombre: $query",
@@ -139,7 +131,7 @@ fun Result(
                         )
                         Result(
                             locationUIState,
-                            onClick = onClick
+                            onClick = onEvent
                         )
                     }
                 }
@@ -150,11 +142,57 @@ fun Result(
 
 @Composable
 fun ConfirmButton(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    locationUIState: LocationUIState,
+    onClick: (Geolocation) -> Unit
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
-    )
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Button(
+            onClick = {
+                if(locationUIState.selectedItem != null){
+                    onClick(locationUIState.selectedItem)
+                }
+            },
+            enabled = locationUIState.selectedItem != null,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF8E4CE3),
+                disabledContainerColor = Color(0xFF939194)
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                "Seleccionar Ciudad",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.White
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun Result(locationUIState: LocationUIState, onClick: (Int) -> Unit) {
+    val rvState = rememberLazyListState()
+    LazyColumn(
+        state = rvState,
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(locationUIState.geolocationItems, key = {it.id}){ geolocation ->
+            CityLocationItem(
+                geolocation = geolocation,
+                isSelected = locationUIState.selectedItem?.id == geolocation.id,
+                onClick = onClick
+            )
+        }
+    }
 }
 
 @Preview(showSystemUi = true)
@@ -176,33 +214,29 @@ fun SearchUIPreview() {
                         alias = "Alias",
                         latitude = 0.0,
                         longitude = 0.0
+                    ),
+                    Geolocation(
+                        id = 2,
+                        name = "City",
+                        country = "Country",
+                        alias = "Alias",
+                        latitude = 0.0,
+                        longitude = 0.0
                     )
                 ),
-                false
+                Geolocation(
+                    id = 1,
+                    name = "City",
+                    country = "Country",
+                    alias = "Alias",
+                    latitude = 0.0,
+                    longitude = 0.0
+                ),
+                false,
+                searchComplete = true
             ),
             {}
         ) {
-        }
-    }
-}
-
-
-@Composable
-fun Result(locationUIState: LocationUIState, onClick: (Geolocation) -> Unit) {
-    val rvState = rememberLazyListState()
-    LazyColumn(
-        state = rvState,
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(),
-        contentPadding = PaddingValues(),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        items(locationUIState.geolocationItems, key = {it.id}){
-            CityLocationItem(
-                geolocation = it,
-                onClick = onClick
-            )
         }
     }
 }
