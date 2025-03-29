@@ -79,8 +79,6 @@ dependencies {
     //Corrutinas
     implementation (libs.kotlinx.coroutines.android)
 
-    // Fragment
-    implementation (libs.fragment.ktx)
     // Activity
     implementation (libs.activity.ktx)
 
