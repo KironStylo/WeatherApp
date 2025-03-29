@@ -47,19 +47,21 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
 
 
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
-    implementation(libs.androidx.ui.tooling.preview.android)
 
 
     // Jetpack Compose libraries
+    implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+
 
     // ViewModel Dependencies
     implementation (libs.lifecycle.viewmodel.ktx)
@@ -72,7 +74,6 @@ dependencies {
 
     // Dependency Injection
     implementation(libs.hilt.android)
-    implementation(libs.androidx.ui.text.android)
     debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.hilt.android.compiler)
 
