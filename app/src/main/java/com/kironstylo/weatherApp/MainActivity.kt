@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kironstylo.weatherApp.core.screen.RoutingNames
 import com.kironstylo.weatherApp.searchCityFeature.presentation.CityScreen
 import com.kironstylo.weatherApp.searchCityFeature.presentation.GeoViewModel
 import com.kironstylo.weatherApp.weatherFeature.presentation.WeatherScreen
@@ -51,9 +52,9 @@ class MainActivity : AppCompatActivity() {
         val locationState by geoViewModel.locationState.collectAsState()
         NavHost(
             navController = navController,
-            startDestination = "Screen1"
+            startDestination = RoutingNames.CityScreen
         ) {
-            composable("Screen1") {
+            composable<RoutingNames.CityScreen>{
                 CityScreen(
                     modifier = modifier,
                     locationUIState = locationState,
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate("Screen2")
                 }
             }
-            composable("Screen2"){
+            composable<RoutingNames.WeatherScreen>{
                 WeatherScreen(weatherViewModel)
             }
         }
