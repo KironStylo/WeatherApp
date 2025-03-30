@@ -18,6 +18,7 @@ navigationCompose = "2.8.5"
 retrofit = "2.11.0"
 runtimeLivedata = "1.7.8"
 kotlinSerialization = "1.8.0"
+kotlinSerializationPlugin = "2.1.20"
 
 
 [libraries]
@@ -67,4 +68,5 @@ android-application = {id ="com.android.application", version.ref = "agp"}
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dagger-hilt-android = {id = "com.google.dagger.hilt.android", version.ref = "hilt-android"}
+kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationPlugin"}
 kotlin-kapt = {id = "kotlin-kapt"}
