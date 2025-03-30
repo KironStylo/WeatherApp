@@ -1,6 +1,7 @@
 package com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto
 
 import com.google.gson.annotations.SerializedName
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
 
 data class DailyDto (
     @SerializedName("time")
@@ -10,3 +11,14 @@ data class DailyDto (
     @SerializedName("temperature_2m_min")
     val minTemperatures: List<Double>,
     )
+fun DailyDto.toDailyWeather():List<DailyWeather>
+{
+    return dates.mapIndexed{ index, date ->
+        DailyWeather(
+            date = date,
+            maxTemperature = maxTemperatures[index],
+            minTemperature = minTemperatures[index],
+            weatherCode = 1
+        )
+    }
+}

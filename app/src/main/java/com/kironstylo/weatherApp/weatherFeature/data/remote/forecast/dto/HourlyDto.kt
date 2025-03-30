@@ -1,6 +1,9 @@
 package com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto
 
 import com.google.gson.annotations.SerializedName
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
+import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
+import java.time.LocalDateTime
 
 data class HourlyDto(
     @SerializedName("time")
@@ -15,5 +18,17 @@ data class HourlyDto(
     val windspeedList: List<Double>,
     @SerializedName("weather_code")
     val codes: List<Int>
-
 )
+fun HourlyDto.toHourlyWeather(): List<HourlyWeather>{
+    return dates.mapIndexed{ index, date ->
+        HourlyWeather(
+            date = DateFormatter.formatDate(LocalDateTime.parse(date), "yyyy-MM-dd"),
+            time = DateFormatter.formatDate(LocalDateTime.parse(date), "hh a"),
+            temperature = temperatures[index],
+            precipitation = precipitationList[index],
+            humidity = humidityList[index],
+            windSpeed = windspeedList[index],
+            weatherCode = codes[index]
+        )
+    }
+}
