@@ -1,8 +1,8 @@
 package com.kironstylo.weatherApp.weatherFeature.domain.model.weather
 
 data class Forecast(
-    val date: String,
-    val hour: String,
-    val currentWeatherInfo: WeatherInfo,
-    val hourlyWeatherInfo: List<WeatherInfo>,
+    val currentDate: String? = "",
+    val currentHour: String? = "",
+    val dailyWeather: List<DailyWeather>,
+    val hourlyWeather: List<HourlyWeather>
 )
