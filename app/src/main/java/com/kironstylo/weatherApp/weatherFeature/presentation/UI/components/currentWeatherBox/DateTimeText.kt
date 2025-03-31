@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components
+package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.currentWeatherBox
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
