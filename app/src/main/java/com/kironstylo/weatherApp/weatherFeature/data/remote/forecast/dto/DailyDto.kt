@@ -2,6 +2,7 @@ package com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto
 
 import com.google.gson.annotations.SerializedName
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
+import java.time.LocalDateTime
 
 data class DailyDto (
     @SerializedName("time")
@@ -15,7 +16,7 @@ fun DailyDto.toDailyWeather():List<DailyWeather>
 {
     return dates.mapIndexed{ index, date ->
         DailyWeather(
-            date = date,
+            date = LocalDateTime.parse(date),
             maxTemperature = maxTemperatures[index],
             minTemperature = minTemperatures[index],
             weatherCode = 1

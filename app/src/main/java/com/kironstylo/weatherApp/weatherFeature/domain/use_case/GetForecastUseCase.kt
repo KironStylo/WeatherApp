@@ -8,6 +8,7 @@ import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class GetForecastUseCase @Inject constructor(
@@ -27,14 +28,7 @@ class GetForecastUseCase @Inject constructor(
                 weatherResult is Resource.Success && timeResult is Resource.Success -> {
                     Resource.Success(
                         weatherResult.data?.copy(
-                            currentDate = DateFormatter.formatDate(
-                                timeResult.data!!.localTime,
-                                "yyyy-MM-dd"
-                            ),
-                            currentHour = DateFormatter.formatDate(
-                                timeResult.data.localTime,
-                                "hh a"
-                            )
+                            currentDate = timeResult.data?.localTime ?: LocalDateTime.now()
                         ) ?: Forecast()
                     )
                 }

@@ -48,21 +48,22 @@ class WeatherViewModel @Inject constructor(
     val timeZoneInfo: LiveData<DateTime> = _timezoneInfo
 
     private val _hourlyWeatherState = MutableStateFlow(HourlyWeatherUIState())
-    val hourlyWeatherState : StateFlow<HourlyWeatherUIState> = _hourlyWeatherState.asStateFlow()
+    val hourlyWeatherState: StateFlow<HourlyWeatherUIState> = _hourlyWeatherState.asStateFlow()
 
     private val _dailyWeatherState = MutableStateFlow(DailyWeatherUIState())
-    val dailyWeatherState : StateFlow<DailyWeatherUIState> = _dailyWeatherState.asStateFlow()
+    val dailyWeatherState: StateFlow<DailyWeatherUIState> = _dailyWeatherState.asStateFlow()
 
     private val _loadingState = MutableStateFlow(false)
     val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
 
-    fun getWeather(latitude: Double, longitude: Double){
-        viewModelScope.launch{
+    fun getWeather(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
             getForecastUseCase(latitude = latitude, longitude = longitude).onEach { result ->
-                when(result){
+                when (result) {
                     is Resource.Error -> {
                         _loadingState.value = false
                     }
+
                     is Resource.Loading -> {
                         _loadingState.value = true
                     }
@@ -71,7 +72,8 @@ class WeatherViewModel @Inject constructor(
                         _hourlyWeatherState.value = hourlyWeatherState.value.copy(
                             hourlyWeatherList = result.data?.hourlyWeather ?: emptyList(),
                             selectedHourlyWeather = result.data?.hourlyWeather?.first {
-                                it.date == result.data.currentDate && it.date == result.data.currentHour
+                                it.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
+                                        it.date.hour == result.data.currentDate.hour
                             } ?: HourlyWeather()
                         )
                         _dailyWeatherState.value = dailyWeatherState.value.copy(

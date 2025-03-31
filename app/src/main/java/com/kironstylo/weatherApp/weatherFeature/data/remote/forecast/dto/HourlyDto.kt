@@ -22,8 +22,7 @@ data class HourlyDto(
 fun HourlyDto.toHourlyWeather(): List<HourlyWeather>{
     return dates.mapIndexed{ index, date ->
         HourlyWeather(
-            date = DateFormatter.formatDate(LocalDateTime.parse(date), "yyyy-MM-dd"),
-            time = DateFormatter.formatDate(LocalDateTime.parse(date), "hh a"),
+            date = LocalDateTime.parse(date),
             temperature = temperatures[index],
             precipitation = precipitationList[index],
             humidity = humidityList[index],
