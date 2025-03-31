@@ -1,4 +1,4 @@
-package com.kironstylo.weatherApp.weatherFeature.presentation.UI.states
+package com.kironstylo.weatherApp.weatherFeature.presentation.ui.states
 
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 

@@ -15,9 +15,8 @@ import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeath
 import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetForecastUseCase
 import com.kironstylo.weatherApp.weatherFeature.domain.use_case.WeatherUseCases
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
-import com.kironstylo.weatherApp.weatherFeature.domain.utils.*
-import com.kironstylo.weatherApp.weatherFeature.presentation.UI.states.DailyWeatherUIState
-import com.kironstylo.weatherApp.weatherFeature.presentation.UI.states.HourlyWeatherUIState
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
