@@ -57,8 +57,9 @@ fun WeatherScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxWidth(),
-            verticalArrangement = if(loadingState) Arrangement.Center else Arrangement.Top
+                .fillMaxSize(),
+            verticalArrangement = if(loadingState) Arrangement.Center else Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if(loadingState){
                 CircularProgressIndicator(
