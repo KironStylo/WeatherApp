@@ -1,5 +1,6 @@
 package com.kironstylo.weatherApp.weatherFeature.domain.use_case
 
+import android.util.Log
 import com.kironstylo.weatherApp.core.util.Resource
 import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepository
 import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepository
@@ -22,22 +23,26 @@ class GetForecastUseCase @Inject constructor(
         ) { weatherResult, timeResult ->
             when {
                 weatherResult is Resource.Loading || timeResult is Resource.Loading -> {
+                    Log.i("ForecastUC", "Loading")
                     Resource.Loading()
                 }
-
                 weatherResult is Resource.Success && timeResult is Resource.Success -> {
+                    Log.i("ForecastUC", "Successful")
+                    Log.i("ForecastUC", "Succesful \n ${weatherResult.data?.dailyWeather}")
                     Resource.Success(
                         weatherResult.data?.copy(
                             currentDate = timeResult.data?.localTime ?: LocalDateTime.now()
                         ) ?: Forecast()
                     )
                 }
-
                 weatherResult is Resource.Error -> {
+                    Log.i("ForecastUC", "Error Weather")
                     Resource.Error(weatherResult.message)
                 }
 
                 timeResult is Resource.Error -> {
+                    Log.i("ForecastUC", "Error Time")
+
                     Resource.Error(timeResult.message)
                 }
 

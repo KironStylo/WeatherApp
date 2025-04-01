@@ -57,28 +57,36 @@ class WeatherViewModel @Inject constructor(
     val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
 
     fun getWeather(latitude: Double, longitude: Double) {
+        Log.i("get Weather", "Latitude:$latitude, longitude:$longitude")
         viewModelScope.launch {
             getForecastUseCase(latitude = latitude, longitude = longitude).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _loadingState.value = false
                     }
-
                     is Resource.Loading -> {
                         _loadingState.value = true
                     }
                     is Resource.Success -> {
+                        Log.i("WeatherViewModel", "API calls successful")
+                        Log.i("WeatherViewModel", "Current Date: ${result.data?.currentDate}")
+                        result.data?.hourlyWeather?.forEach {
+                            Log.i("WeatherViewModel", "${it.date}")
+                        }
                         _loadingState.value = false
                         _hourlyWeatherState.value = hourlyWeatherState.value.copy(
                             hourlyWeatherList = result.data?.hourlyWeather ?: emptyList(),
-                            selectedHourlyWeather = result.data?.hourlyWeather?.first {
+                            selectedHourlyWeather = result.data?.hourlyWeather?.firstOrNull {
+                                Log.i("WeatherViewModel", "${it.date}")
                                 it.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
                                         it.date.hour == result.data.currentDate.hour
                             } ?: HourlyWeather()
                         )
+                        Log.i("WeatherViewModel", "HourlyWeatherState filled")
+                        Log.i("WeatherViewModel", "Selected ${_hourlyWeatherState.value.selectedHourlyWeather}")
                         _dailyWeatherState.value = dailyWeatherState.value.copy(
                             dailyWeatherList = result.data?.dailyWeather ?: emptyList(),
-                            selectedDailyWeather = result.data?.dailyWeather?.first {
+                            selectedDailyWeather = result.data?.dailyWeather?.firstOrNull{
                                 it.date == result.data.currentDate
                             } ?: DailyWeather()
                         )
@@ -132,5 +140,4 @@ class WeatherViewModel @Inject constructor(
         val hour: String = DateFormatter.formatDate(localDateTime, "hh:mm a")
 
     }
-
 }
