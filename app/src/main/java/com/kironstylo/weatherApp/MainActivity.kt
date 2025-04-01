@@ -50,6 +50,9 @@ class MainActivity : AppCompatActivity() {
     fun App(modifier: Modifier) {
         val navController = rememberNavController()
         val locationState by geoViewModel.locationState.collectAsState()
+        val hourlyWeatherState by weatherViewModel.hourlyWeatherState.collectAsState()
+        val dailyWeatherState by weatherViewModel.dailyWeatherState.collectAsState()
+        val loadingState by weatherViewModel.loadingState.collectAsState()
         NavHost(
             navController = navController,
             startDestination = RoutingNames.CityScreen
@@ -60,12 +63,19 @@ class MainActivity : AppCompatActivity() {
                     locationUIState = locationState,
                     onEvent = geoViewModel::onEvent
                     ){
-                    weatherViewModel.getWeather(it)
+                    weatherViewModel.getWeather(
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
                     navController.navigate("Screen2")
                 }
             }
             composable<RoutingNames.WeatherScreen>{
-                WeatherScreen(weatherViewModel)
+                WeatherScreen(
+                    hourlyWeatherUIState = hourlyWeatherState,
+                    dailyWeatherUIState = dailyWeatherState,
+                    loadingState = loadingState
+                )
             }
         }
 
