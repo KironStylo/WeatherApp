@@ -1,18 +1,14 @@
-package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components
+package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hourlyWeatherList
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
