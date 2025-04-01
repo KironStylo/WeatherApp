@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -37,7 +38,49 @@ import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.currentWeatherBox.*
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hourlyWeatherList.*
 import java.time.LocalDateTime
+
+
+@Composable
+fun WeatherScreen(
+    hourlyWeatherUIState: HourlyWeatherUIState,
+    dailyWeatherUIState: DailyWeatherUIState,
+    loadingState: Boolean
+){
+    Scaffold (
+        containerColor = Color(0xFFACBDBA)
+    ){ innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth(),
+            verticalArrangement = if(loadingState) Arrangement.Center else Arrangement.Top
+        ) {
+            if(loadingState){
+                CircularProgressIndicator(
+                    modifier = Modifier.size(200.dp),
+                    color = Color(0xFFB58FE7),
+                    trackColor = Color(0xFFA599B5)
+                )
+            }
+            else{
+               WeatherInfoCard(
+                   hourlyWeather = hourlyWeatherUIState.selectedHourlyWeather,
+                   dailyWeather = dailyWeatherUIState.selectedDailyWeather
+               )
+                HourlyWeatherList(
+                    hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList
+                ) {
+                    it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun WeatherScreen(weatherViewModel: WeatherViewModel) {
