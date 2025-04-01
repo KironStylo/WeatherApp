@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                         latitude = it.latitude,
                         longitude = it.longitude
                     )
-                    navController.navigate("Screen2")
+                    navController.navigate(RoutingNames.WeatherScreen)
                 }
             }
             composable<RoutingNames.WeatherScreen>{
