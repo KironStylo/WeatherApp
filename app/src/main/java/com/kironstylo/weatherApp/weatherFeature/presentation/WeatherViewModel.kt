@@ -87,9 +87,11 @@ class WeatherViewModel @Inject constructor(
                         _dailyWeatherState.value = dailyWeatherState.value.copy(
                             dailyWeatherList = result.data?.dailyWeather ?: emptyList(),
                             selectedDailyWeather = result.data?.dailyWeather?.firstOrNull{
-                                it.date == result.data.currentDate
+                                it.date.toLocalDate() == result.data.currentDate.toLocalDate()
                             } ?: DailyWeather()
                         )
+                        Log.i("WeatherViewModel", "DailyWeatherState filled")
+                        Log.i("WeatherViewModel", "Selected ${_dailyWeatherState.value.selectedDailyWeather}")
                     }
                 }
             }.collect()
