@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kironstylo.weatherApp.core.screen.RoutingNames
 import com.kironstylo.weatherApp.searchCityFeature.presentation.CityScreen
 import com.kironstylo.weatherApp.searchCityFeature.presentation.GeoViewModel
 import com.kironstylo.weatherApp.weatherFeature.presentation.WeatherScreen
@@ -49,22 +50,33 @@ class MainActivity : AppCompatActivity() {
     fun App(modifier: Modifier) {
         val navController = rememberNavController()
         val locationState by geoViewModel.locationState.collectAsState()
+        val hourlyWeatherState by weatherViewModel.hourlyWeatherState.collectAsState()
+        val dailyWeatherState by weatherViewModel.dailyWeatherState.collectAsState()
+        val loadingState by weatherViewModel.loadingState.collectAsState()
         NavHost(
             navController = navController,
-            startDestination = "Screen1"
+            startDestination = RoutingNames.CityScreen
         ) {
-            composable("Screen1") {
+            composable<RoutingNames.CityScreen>{
                 CityScreen(
                     modifier = modifier,
                     locationUIState = locationState,
                     onEvent = geoViewModel::onEvent
                     ){
-                    weatherViewModel.getWeather(it)
-                    navController.navigate("Screen2")
+                    weatherViewModel.getWeather(
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                    navController.navigate(RoutingNames.WeatherScreen)
                 }
             }
-            composable("Screen2"){
-                WeatherScreen(weatherViewModel)
+            composable<RoutingNames.WeatherScreen>{
+                WeatherScreen(
+                    modifier = modifier,
+                    hourlyWeatherUIState = hourlyWeatherState,
+                    dailyWeatherUIState = dailyWeatherState,
+                    loadingState = loadingState
+                )
             }
         }
 

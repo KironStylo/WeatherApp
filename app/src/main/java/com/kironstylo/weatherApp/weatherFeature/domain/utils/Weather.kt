@@ -1,6 +1,8 @@
 package com.kironstylo.weatherApp.weatherFeature.domain.utils
 
 import com.kironstylo.weatherApp.R
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 object Weather {
 
@@ -122,6 +124,16 @@ object Weather {
 
     private fun isDaytime(hour: Int): Boolean {
         return hour in 6..17
+    }
+
+    private fun isDaytime(localDateTime: LocalDateTime): Boolean{
+        val time = localDateTime.toLocalTime()
+        return !time.isBefore(LocalTime.of(6, 0)) && time.isBefore(LocalTime.of(18,0))
+    }
+
+    fun getWeatherNameByCode(code: Int, date: LocalDateTime): WeatherCode{
+        val time = if(isDaytime(date)) "day" else "night"
+        return weatherCodes[code]?.get(time) ?: WeatherCode("Unknown Weather")
     }
 
     fun getWeatherNameByCode(code: Int, hour: Int): WeatherCode {

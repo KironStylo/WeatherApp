@@ -1,8 +1,9 @@
 package com.kironstylo.weatherApp.weatherFeature.domain.model.weather
 
+import java.time.LocalDateTime
+
 data class Forecast(
-    val date: String,
-    val hour: String,
-    val currentWeatherInfo: WeatherInfo,
-    val hourlyWeatherInfo: List<WeatherInfo>,
+    val currentDate: LocalDateTime = LocalDateTime.now(),
+    val dailyWeather: List<DailyWeather> = emptyList(),
+    val hourlyWeather: List<HourlyWeather> = emptyList()
 )
