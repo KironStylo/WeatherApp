@@ -80,7 +80,7 @@ class WeatherViewModel @Inject constructor(
                                 Log.i("WeatherViewModel", "${it.date}")
                                 it.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
                                         it.date.hour == result.data.currentDate.hour
-                            } ?: HourlyWeather()
+                            }?.copy(date = result.data.currentDate) ?: HourlyWeather()
                         )
                         Log.i("WeatherViewModel", "HourlyWeatherState filled")
                         Log.i("WeatherViewModel", "Selected ${_hourlyWeatherState.value.selectedHourlyWeather}")
