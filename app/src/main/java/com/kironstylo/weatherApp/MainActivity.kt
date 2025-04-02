@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             }
             composable<RoutingNames.WeatherScreen>{
                 WeatherScreen(
+                    modifier = modifier,
                     hourlyWeatherUIState = hourlyWeatherState,
                     dailyWeatherUIState = dailyWeatherState,
                     loadingState = loadingState

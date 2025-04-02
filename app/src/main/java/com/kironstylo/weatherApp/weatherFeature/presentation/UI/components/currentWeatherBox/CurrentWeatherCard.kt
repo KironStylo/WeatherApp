@@ -3,11 +3,13 @@ package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.curr
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -40,12 +42,10 @@ fun WeatherInfoCard(
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
-        )
+        ),
     ){
         Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 16.dp),
+            modifier = Modifier.fillMaxHeight().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically)
         ){

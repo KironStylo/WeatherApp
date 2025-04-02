@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,21 +32,41 @@ import java.time.LocalDateTime
 
 @Composable
 fun HourlyWeatherList(
+    modifier: Modifier = Modifier,
     hourlyWeatherList: List<HourlyWeather>,
+    isSelected: (HourlyWeather) -> Boolean,
     filterList: (HourlyWeather) -> Boolean
 ){
     Column (
-        modifier = Modifier
+        modifier = modifier
             .width(390.dp)
-            .height(200.dp),
+            .height(160.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Text("Today", style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold))
+        Row(
+            modifier = Modifier.weight(0.2f),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                "Today",
+                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f)
+            )
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Selected time: ", style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp))
+                Box(modifier = Modifier.size(16.dp).border(1.dp, Color.Black, RoundedCornerShape(5.dp)).clip(RoundedCornerShape(5.dp)).background(Color(0xFF8E4CE3)))
+            }
+        }
         LazyRow(
             modifier = Modifier
-                .width(390.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                .weight(0.9f)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.Top
         ) {
             items(
                 hourlyWeatherList.filter{
@@ -51,15 +74,10 @@ fun HourlyWeatherList(
                 }
             ){
                 HourWeatherItem(
+                    isSelected = isSelected(it),
                     hourlyWeather = it
                 )
             }
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Selected time: ", style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp))
-            Box(modifier = Modifier.size(16.dp).border(1.dp, Color.Black, RoundedCornerShape(5.dp)).clip(RoundedCornerShape(5.dp)).background(Color(0xFF8E4CE3)))
         }
     }
 }
@@ -69,12 +87,16 @@ fun HourlyWeatherList(
 @Composable
 fun HourlyWeatherListPreview(){
     HourlyWeatherList(
-        listOf(
+        hourlyWeatherList = listOf(
             HourlyWeather(),
             HourlyWeather(
                 date = LocalDateTime.of(2025,3,31,20,0)
             )
-        )
+        ),
+        isSelected = { it ->
+            it.date.toLocalDate() == HourlyWeather().date.toLocalDate() &&
+                    it.date.hour == HourlyWeather().date.hour
+        }
     ) {
         it.date.toLocalDate() == LocalDateTime.now().toLocalDate()
     }

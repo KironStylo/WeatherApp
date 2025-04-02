@@ -33,9 +33,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
@@ -47,40 +49,70 @@ import java.time.LocalDateTime
 
 @Composable
 fun WeatherScreen(
+    modifier : Modifier = Modifier,
     hourlyWeatherUIState: HourlyWeatherUIState,
     dailyWeatherUIState: DailyWeatherUIState,
     loadingState: Boolean
 ){
-    Scaffold (
-        containerColor = Color(0xFFACBDBA)
-    ){ innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            verticalArrangement = if(loadingState) Arrangement.Center else Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if(loadingState){
-                CircularProgressIndicator(
-                    modifier = Modifier.size(200.dp),
-                    color = Color(0xFFB58FE7),
-                    trackColor = Color(0xFFA599B5)
-                )
-            }
-            else{
-               WeatherInfoCard(
-                   hourlyWeather = hourlyWeatherUIState.selectedHourlyWeather,
-                   dailyWeather = dailyWeatherUIState.selectedDailyWeather
-               )
-                HourlyWeatherList(
-                    hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList
-                ) {
-                    it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(space = 4.dp, alignment =  if(loadingState) Alignment.CenterVertically else Alignment.Top),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if(loadingState){
+            CircularProgressIndicator(
+                modifier = Modifier.size(200.dp),
+                color = Color(0xFFB58FE7),
+                trackColor = Color(0xFFA599B5)
+            )
+        }
+        else{
+            WeatherInfoCard(
+                modifier = Modifier.weight(0.5f),
+                hourlyWeather = hourlyWeatherUIState.selectedHourlyWeather,
+                dailyWeather = dailyWeatherUIState.selectedDailyWeather
+            )
+            HourlyWeatherList(
+                modifier = Modifier.weight(0.25f),
+                hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList,
+                isSelected = {
+                    it.date.hour == hourlyWeatherUIState.selectedHourlyWeather.date.hour
                 }
+            ) {
+                it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
             }
+            Text("Hi", modifier = Modifier.weight(0.25f))
         }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun WeatherScreenPreview(){
+    Scaffold (
+        modifier = Modifier
+            .fillMaxSize(),
+        containerColor = Color(0xFFB5B9B9)
+    ){
+
+        innerPadding ->
+        WeatherScreen(
+            modifier = Modifier.padding(innerPadding),
+            hourlyWeatherUIState = HourlyWeatherUIState(
+                hourlyWeatherList = listOf(
+                    HourlyWeather(),
+                    HourlyWeather(
+                        date = LocalDateTime.of(2025,3,31,20,0)
+                    )
+                ),
+            ),
+            dailyWeatherUIState = DailyWeatherUIState(),
+            loadingState = false
+        )
+    }
+
 }
 
 @Composable
