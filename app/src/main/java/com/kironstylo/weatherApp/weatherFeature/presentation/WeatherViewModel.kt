@@ -12,6 +12,7 @@ import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeathe
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetForecastUseCase
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +38,18 @@ class WeatherViewModel @Inject constructor(
 
     private val _loadingState = MutableStateFlow(false)
     val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
+
+    fun onEvent(weatherEvent: WeatherEvent){
+        when(weatherEvent){
+            is WeatherEvent.ChangeTimeEvent -> {
+                _hourlyWeatherState.value  = hourlyWeatherState.value.copy(
+                    selectedHourlyWeather = hourlyWeatherState.value.hourlyWeatherList.find {
+                        it.date == weatherEvent.localTime
+                    }!!
+                )
+            }
+        }
+    }
 
     fun getWeather(latitude: Double, longitude: Double) {
         Log.i("get Weather", "Latitude:$latitude, longitude:$longitude")
