@@ -3,8 +3,8 @@ package com.kironstylo.weatherApp.di
 import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.WeatherApiClient
 import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoApiClient
 import com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.TimeApiClient
-import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepository
-import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepository
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.TimeRepository
+import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,5 +66,11 @@ object NetworkModule {
     @Singleton
     fun provideTimeApiClient(@Named("TimeApi")retrofit: Retrofit): TimeApiClient {
         return retrofit.create(TimeApiClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimeRepository(timeApiClient: TimeApiClient): TimeRepository {
+        return TimeRepositoryImpl(timeApiClient)
     }
 }

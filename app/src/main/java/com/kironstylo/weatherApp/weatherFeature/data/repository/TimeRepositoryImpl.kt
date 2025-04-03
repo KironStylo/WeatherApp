@@ -2,18 +2,17 @@ package com.kironstylo.weatherApp.weatherFeature.data.repository
 
 import android.util.Log
 import com.kironstylo.weatherApp.core.util.Resource
-import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.TimeApiClient
 import com.kironstylo.weatherApp.weatherFeature.domain.model.timezone.Timezone
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.TimeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
-import javax.inject.Inject
 
-class TimeRepository @Inject constructor(
-    private val api: TimeApiClient)
+class TimeRepositoryImpl(
+    private val api: TimeApiClient) : TimeRepository
 {
-    fun getTime(latitude: Double, longitude: Double): Flow<Resource<Timezone>> = flow {
+    override fun getTime(latitude: Double, longitude: Double): Flow<Resource<Timezone>> = flow {
         emit(Resource.Loading())
         try {
             val response = api.getTimeData(latitude = latitude, longitude = longitude)
