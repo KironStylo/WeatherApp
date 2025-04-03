@@ -7,13 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kironstylo.weatherApp.core.util.Resource
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetDailyTemperature
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetHourTemperature
 import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetForecastUseCase
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.WeatherUseCases
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
