@@ -29,23 +29,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val weatherUseCases: WeatherUseCases,
-    private val getDailyTemperature: GetDailyTemperature,
-    private val getHourTemperature: GetHourTemperature,
     private val getForecastUseCase: GetForecastUseCase
 ) : ViewModel() {
-
-    private val _weatherCardLoading = MutableLiveData<Boolean>()
-    val weatherCardLoading: LiveData<Boolean> = _weatherCardLoading
-
-    private val _weatherInfo = MutableLiveData<WeatherInfo>()
-    val weatherInfo: LiveData<WeatherInfo> = _weatherInfo
-
-    private val _hourWeatherInfo = MutableLiveData<List<WeatherInfo>>()
-    val hourWeatherInfo: LiveData<List<WeatherInfo>> = _hourWeatherInfo
-
-    private val _timezoneInfo = MutableLiveData<DateTime>()
-    val timeZoneInfo: LiveData<DateTime> = _timezoneInfo
 
     private val _hourlyWeatherState = MutableStateFlow(HourlyWeatherUIState())
     val hourlyWeatherState: StateFlow<HourlyWeatherUIState> = _hourlyWeatherState.asStateFlow()
@@ -96,50 +81,5 @@ class WeatherViewModel @Inject constructor(
                 }
             }.collect()
         }
-    }
-
-    fun getWeather(location: Geolocation) {
-
-        //isLoading.postValue(true)
-        viewModelScope.launch {
-
-            _weatherCardLoading.value = true
-
-            Log.d(
-                "WeatherViewModel",
-                "Los datos de localizacion son ${
-                    listOf(
-                        location.country,
-                        location.name,
-                        location.longitude,
-                        location.latitude
-                    )
-                }"
-            )
-
-            // Call Timezone API to retrieve current date time
-            val timezone = weatherUseCases.getTimeUseCase(location)
-            // Call Weather API to obtain the latest data of forecast
-            val weather = weatherUseCases.getWeatherUseCase(location)
-            if (timezone != null && weather != null) {
-                val currentTemperature = getDailyTemperature(weather, timezone.localTime)
-                val hourTemperature = getHourTemperature(weather, timezone.localTime)
-
-                _weatherInfo.value = currentTemperature
-                _hourWeatherInfo.value = hourTemperature
-                _timezoneInfo.value = DateTime(timezone.localTime)
-                _weatherCardLoading.value = false
-
-            } else {
-                _weatherCardLoading.value = false
-            }
-
-        }
-    }
-
-    data class DateTime(val localDateTime: LocalDateTime) {
-        val date: String = DateFormatter.formatDate(localDateTime, "dd/MM/yyyy")
-        val hour: String = DateFormatter.formatDate(localDateTime, "hh:mm a")
-
     }
 }
