@@ -44,6 +44,7 @@ import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeat
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.currentWeatherBox.*
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hourlyWeatherList.*
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import java.time.LocalDateTime
 
 
@@ -52,7 +53,8 @@ fun WeatherScreen(
     modifier : Modifier = Modifier,
     hourlyWeatherUIState: HourlyWeatherUIState,
     dailyWeatherUIState: DailyWeatherUIState,
-    loadingState: Boolean
+    loadingState: Boolean,
+    onEvent: (WeatherEvent) -> Unit
 ){
     Column(
         modifier = modifier
@@ -79,10 +81,12 @@ fun WeatherScreen(
                 hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList,
                 isSelected = {
                     it.date.hour == hourlyWeatherUIState.selectedHourlyWeather.date.hour
-                }
-            ) {
-                it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
-            }
+                },
+                filterList = {
+                    it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
+                },
+                onEvent = onEvent
+            )
             Text("Hi", modifier = Modifier.weight(0.25f))
         }
     }
@@ -110,7 +114,7 @@ fun WeatherScreenPreview(){
             ),
             dailyWeatherUIState = DailyWeatherUIState(),
             loadingState = false
-        )
+        ){}
     }
 
 }
