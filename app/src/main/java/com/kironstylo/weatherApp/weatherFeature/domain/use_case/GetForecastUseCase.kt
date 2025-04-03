@@ -2,13 +2,12 @@ package com.kironstylo.weatherApp.weatherFeature.domain.use_case
 
 import android.util.Log
 import com.kironstylo.weatherApp.core.util.Resource
-import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepository
-import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepository
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.TimeRepository
+import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepositoryImpl
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.Forecast
-import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -42,7 +41,6 @@ class GetForecastUseCase @Inject constructor(
 
                 timeResult is Resource.Error -> {
                     Log.i("ForecastUC", "Error Time")
-
                     Resource.Error(timeResult.message)
                 }
 

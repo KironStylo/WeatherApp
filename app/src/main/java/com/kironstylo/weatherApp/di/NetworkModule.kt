@@ -5,6 +5,8 @@ import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoApiClient
 import com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.TimeApiClient
 import com.kironstylo.weatherApp.weatherFeature.domain.repository.TimeRepository
 import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepositoryImpl
+import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepositoryImpl
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,5 +74,11 @@ object NetworkModule {
     @Singleton
     fun provideTimeRepository(timeApiClient: TimeApiClient): TimeRepository {
         return TimeRepositoryImpl(timeApiClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherRepository(weatherApiClient: WeatherApiClient): WeatherRepository{
+        return WeatherRepositoryImpl(weatherApiClient)
     }
 }

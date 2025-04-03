@@ -1,25 +1,23 @@
-package com.kironstylo.weatherApp.weatherFeature.data.remote.forecast
+package com.kironstylo.weatherApp.weatherFeature.data.repository
 
 import com.kironstylo.weatherApp.core.util.Resource
-import com.kironstylo.weatherApp.searchCityFeature.domain.model.Geolocation
-import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto.WeatherDataDto
+import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.WeatherApiClient
 import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto.toDailyWeather
 import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.dto.toHourlyWeather
-import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.Forecast
-import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import java.io.IOException
-import javax.inject.Inject
 
-class WeatherService @Inject constructor(
+
+class WeatherRepositoryImpl (
     private val api: WeatherApiClient
-){
-    fun getWeather(latitude: Double, longitude: Double): Flow<Resource<Forecast>> = flow{
+): WeatherRepository{
+
+    override fun getWeather(latitude: Double, longitude: Double): Flow<Resource<Forecast>> = flow{
         emit(Resource.Loading())
         try{
             val response = api.getWeatherData(latitude, longitude)
@@ -35,11 +33,4 @@ class WeatherService @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getWeather(locationData: Geolocation): WeatherDataDto?{
-        return withContext(Dispatchers.IO){
-            val response1 = api
-                .getWeatherData(locationData.latitude, locationData.longitude)
-            response1.body()
-        }
-    }
 }
