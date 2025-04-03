@@ -81,12 +81,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    @Preview
-    @Composable
-    fun WeatherScreenPreview() {
-        WeatherScreen(weatherViewModel)
-    }
 }
 
 
