@@ -65,17 +65,22 @@ class WeatherViewModel @Inject constructor(
                     is Resource.Success -> {
                         Log.i("WeatherViewModel", "API calls successful")
                         Log.i("WeatherViewModel", "Current Date: ${result.data?.currentDate}")
-                        result.data?.hourlyWeather?.forEach {
-                            Log.i("WeatherViewModel", "${it.date}")
-                        }
                         _loadingState.value = false
+                        val updatedList = result.data?.hourlyWeather?.map { weather ->
+                            if (weather.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
+                                weather.date.hour == result.data.currentDate.hour
+                            ) {
+                                weather.copy(date = result.data.currentDate)
+                            } else {
+                                weather
+                            }
+                        } ?: emptyList()
+
                         _hourlyWeatherState.value = hourlyWeatherState.value.copy(
-                            hourlyWeatherList = result.data?.hourlyWeather ?: emptyList(),
-                            selectedHourlyWeather = result.data?.hourlyWeather?.firstOrNull {
-                                Log.i("WeatherViewModel", "${it.date}")
-                                it.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
-                                        it.date.hour == result.data.currentDate.hour
-                            }?.copy(date = result.data.currentDate) ?: HourlyWeather()
+                            hourlyWeatherList = updatedList,
+                            selectedHourlyWeather = updatedList.firstOrNull {
+                                it.date == result.data?.currentDate
+                            } ?: HourlyWeather()
                         )
                         Log.i("WeatherViewModel", "HourlyWeatherState filled")
                         Log.i("WeatherViewModel", "Selected ${_hourlyWeatherState.value.selectedHourlyWeather}")
