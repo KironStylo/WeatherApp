@@ -37,12 +37,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.currentWeatherBox.*
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.dailyWeatherList.DailyWeatherList
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hourlyWeatherList.*
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import java.time.LocalDateTime
@@ -77,7 +79,7 @@ fun WeatherScreen(
                 dailyWeather = dailyWeatherUIState.selectedDailyWeather
             )
             HourlyWeatherList(
-                modifier = Modifier.weight(0.25f),
+                modifier = Modifier.weight(0.2f),
                 hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList,
                 isSelected = {
                     it.date.hour == hourlyWeatherUIState.selectedHourlyWeather.date.hour
@@ -87,7 +89,10 @@ fun WeatherScreen(
                 },
                 onEvent = onEvent
             )
-            Text("Hi", modifier = Modifier.weight(0.25f))
+            DailyWeatherList(
+                modifier = Modifier.weight(0.25f),
+                dailyWeatherList = dailyWeatherUIState.dailyWeatherList
+            )
         }
     }
 }
@@ -112,7 +117,16 @@ fun WeatherScreenPreview(){
                     )
                 ),
             ),
-            dailyWeatherUIState = DailyWeatherUIState(),
+            dailyWeatherUIState = DailyWeatherUIState(
+                dailyWeatherList = listOf(
+                    DailyWeather(),
+                    DailyWeather(
+                        date = LocalDateTime.of(2025,4,4,14,0),
+                        maxTemperature = 20.0,
+                        minTemperature = 10.0
+                    ),
+                )
+            ),
             loadingState = false
         ){}
     }
