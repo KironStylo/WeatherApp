@@ -68,7 +68,7 @@ fun HourlyWeatherList(
                 .weight(0.9f)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
         ) {
             items(
                 hourlyWeatherList.filter{

@@ -21,13 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import java.time.LocalDateTime
 
 @Composable
 fun DailyWeatherList(
     modifier : Modifier = Modifier,
     dailyWeatherList : List<DailyWeather>,
-    isSelected: (DailyWeather) -> Boolean
+    isSelected: (DailyWeather) -> Boolean,
+    onEvent:(WeatherEvent)->Unit
 ){
     val modifierMinMax = modifier.width(50.dp)
     Column(
@@ -74,7 +76,8 @@ fun DailyWeatherList(
             items(dailyWeatherList){ dailyWeather ->
                 DailyWeatherItem(
                     dailyWeather = dailyWeather,
-                    isSelected = isSelected(dailyWeather)
+                    isSelected = isSelected(dailyWeather),
+                    onEvent = onEvent
                 )
             }
         }
@@ -92,8 +95,10 @@ fun DailyWeatherListPreview(){
                 minTemperature = 10.0
             ),
             DailyWeather()
-        )
+        ),
+        isSelected = {
+            DailyWeather().date.toLocalDate() == it.date.toLocalDate()
+        }
     ){
-        DailyWeather().date.toLocalDate() == it.date.toLocalDate()
     }
 }

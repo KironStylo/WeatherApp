@@ -48,6 +48,18 @@ class WeatherViewModel @Inject constructor(
                     }!!
                 )
             }
+            is WeatherEvent.ChangeDateEvent -> {
+                _dailyWeatherState.value = dailyWeatherState.value.copy(
+                    selectedDailyWeather = dailyWeatherState.value.dailyWeatherList.find{
+                        it.date.toLocalDate() == weatherEvent.localDate
+                    }!!
+                )
+                _hourlyWeatherState.value = hourlyWeatherState.value.copy(
+                    selectedHourlyWeather = hourlyWeatherState.value.hourlyWeatherList.find {
+                        it.date.toLocalDate() == weatherEvent.localDate && it.date.hour == hourlyWeatherState.value.selectedHourlyWeather.date.hour
+                    }!!
+                )
+            }
         }
     }
 

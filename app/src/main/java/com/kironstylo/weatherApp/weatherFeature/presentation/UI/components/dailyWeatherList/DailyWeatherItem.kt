@@ -3,6 +3,7 @@ package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.dail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 
 import java.util.Locale
 
@@ -41,7 +43,8 @@ import java.util.Locale
 fun DailyWeatherItem(
     modifier : Modifier = Modifier,
     dailyWeather: DailyWeather,
-    isSelected: Boolean = false
+    isSelected: Boolean = false,
+    onEvent: (WeatherEvent)->Unit
 ){
     Box (
         modifier = modifier
@@ -54,6 +57,9 @@ fun DailyWeatherItem(
             )
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFFCDDDDD))
+            .clickable {
+                onEvent(WeatherEvent.ChangeDateEvent(dailyWeather.date.toLocalDate()))
+            }
         ,
         contentAlignment = Alignment.Center
     ){
@@ -105,5 +111,7 @@ fun DailyWeatherItem(
 fun DailyWeatherItemPreview(){
     DailyWeatherItem(
         dailyWeather =  DailyWeather()
-    )
+    ){
+
+    }
 }

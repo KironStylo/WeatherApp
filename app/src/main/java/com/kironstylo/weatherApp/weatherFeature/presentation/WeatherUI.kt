@@ -91,10 +91,12 @@ fun WeatherScreen(
             )
             DailyWeatherList(
                 modifier = Modifier.weight(0.25f),
-                dailyWeatherList = dailyWeatherUIState.dailyWeatherList
-            ){
-                dailyWeatherUIState.selectedDailyWeather.date.toLocalDate() == it.date.toLocalDate()
-            }
+                dailyWeatherList = dailyWeatherUIState.dailyWeatherList,
+                isSelected = {
+                    dailyWeatherUIState.selectedDailyWeather.date.toLocalDate() == it.date.toLocalDate()
+                },
+                onEvent = onEvent
+            )
         }
     }
 }
