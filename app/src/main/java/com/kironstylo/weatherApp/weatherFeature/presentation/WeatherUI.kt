@@ -62,7 +62,7 @@ fun WeatherScreen(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(space = 4.dp, alignment =  if(loadingState) Alignment.CenterVertically else Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment =  if(loadingState) Alignment.CenterVertically else Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(loadingState){
@@ -92,7 +92,9 @@ fun WeatherScreen(
             DailyWeatherList(
                 modifier = Modifier.weight(0.25f),
                 dailyWeatherList = dailyWeatherUIState.dailyWeatherList
-            )
+            ){
+                dailyWeatherUIState.selectedDailyWeather.date.toLocalDate() == it.date.toLocalDate()
+            }
         }
     }
 }

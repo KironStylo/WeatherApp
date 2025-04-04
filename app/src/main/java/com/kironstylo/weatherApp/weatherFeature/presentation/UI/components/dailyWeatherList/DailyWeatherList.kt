@@ -26,7 +26,8 @@ import java.time.LocalDateTime
 @Composable
 fun DailyWeatherList(
     modifier : Modifier = Modifier,
-    dailyWeatherList : List<DailyWeather>
+    dailyWeatherList : List<DailyWeather>,
+    isSelected: (DailyWeather) -> Boolean
 ){
     val modifierMinMax = modifier.width(50.dp)
     Column(
@@ -67,10 +68,13 @@ fun DailyWeatherList(
                 modifier = Modifier.weight(1f)
             )
         }
-        LazyColumn {
+        LazyColumn (
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ){
             items(dailyWeatherList){ dailyWeather ->
                 DailyWeatherItem(
-                    dailyWeather = dailyWeather
+                    dailyWeather = dailyWeather,
+                    isSelected = isSelected(dailyWeather)
                 )
             }
         }
@@ -89,5 +93,7 @@ fun DailyWeatherListPreview(){
             ),
             DailyWeather()
         )
-    )
+    ){
+        DailyWeather().date.toLocalDate() == it.date.toLocalDate()
+    }
 }
