@@ -66,20 +66,10 @@ class WeatherViewModel @Inject constructor(
                         Log.i("WeatherViewModel", "API calls successful")
                         Log.i("WeatherViewModel", "Current Date: ${result.data?.currentDate}")
                         _loadingState.value = false
-                        val updatedList = result.data?.hourlyWeather?.map { weather ->
-                            if (weather.date.toLocalDate() == result.data.currentDate.toLocalDate() &&
-                                weather.date.hour == result.data.currentDate.hour
-                            ) {
-                                weather.copy(date = result.data.currentDate)
-                            } else {
-                                weather
-                            }
-                        } ?: emptyList()
-
                         _hourlyWeatherState.value = hourlyWeatherState.value.copy(
-                            hourlyWeatherList = updatedList,
-                            selectedHourlyWeather = updatedList.firstOrNull {
-                                it.date == result.data?.currentDate
+                            hourlyWeatherList = result.data?.hourlyWeather ?: emptyList(),
+                            selectedHourlyWeather = result.data?.hourlyWeather?.firstOrNull {
+                                it.date == result.data.currentDate
                             } ?: HourlyWeather()
                         )
                         Log.i("WeatherViewModel", "HourlyWeatherState filled")

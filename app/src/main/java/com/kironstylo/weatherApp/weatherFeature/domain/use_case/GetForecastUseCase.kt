@@ -30,6 +30,14 @@ class GetForecastUseCase @Inject constructor(
                     Log.i("ForecastUC", "Succesful \n ${weatherResult.data?.dailyWeather}")
                     Resource.Success(
                         weatherResult.data?.copy(
+                            hourlyWeather = weatherResult.data.hourlyWeather.map{ hourly ->
+                                if(hourly.date.toLocalDate() == timeResult.data?.localTime?.toLocalDate() && hourly.date.hour == timeResult.data?.localTime?.hour){
+                                    hourly.copy(date = timeResult.data.localTime)
+                                }
+                                else{
+                                    hourly
+                                }
+                            },
                             currentDate = timeResult.data?.localTime ?: LocalDateTime.now()
                         ) ?: Forecast()
                     )
