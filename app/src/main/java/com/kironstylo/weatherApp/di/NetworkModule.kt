@@ -3,11 +3,10 @@ package com.kironstylo.weatherApp.di
 import com.kironstylo.weatherApp.weatherFeature.data.remote.forecast.WeatherApiClient
 import com.kironstylo.weatherApp.searchCityFeature.data.remote.GeoApiClient
 import com.kironstylo.weatherApp.weatherFeature.data.remote.timezone.TimeApiClient
-import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepository
-import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepository
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetTimeUseCase
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.GetWeatherUseCase
-import com.kironstylo.weatherApp.weatherFeature.domain.use_case.WeatherUseCases
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.TimeRepository
+import com.kironstylo.weatherApp.weatherFeature.data.repository.TimeRepositoryImpl
+import com.kironstylo.weatherApp.weatherFeature.data.repository.WeatherRepositoryImpl
+import com.kironstylo.weatherApp.weatherFeature.domain.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,10 +72,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideWeatherUseCases(timeRepository: TimeRepository, weatherRepository: WeatherRepository): WeatherUseCases{
-        return WeatherUseCases(
-            GetTimeUseCase(timeRepository),
-            GetWeatherUseCase(weatherRepository)
-        )
+    fun provideTimeRepository(timeApiClient: TimeApiClient): TimeRepository {
+        return TimeRepositoryImpl(timeApiClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherRepository(weatherApiClient: WeatherApiClient): WeatherRepository{
+        return WeatherRepositoryImpl(weatherApiClient)
     }
 }

@@ -76,16 +76,12 @@ class MainActivity : AppCompatActivity() {
                     hourlyWeatherUIState = hourlyWeatherState,
                     dailyWeatherUIState = dailyWeatherState,
                     loadingState = loadingState
-                )
+                ){
+                    weatherViewModel.onEvent(it)
+                }
             }
         }
 
-    }
-
-    @Preview
-    @Composable
-    fun WeatherScreenPreview() {
-        WeatherScreen(weatherViewModel)
     }
 }
 

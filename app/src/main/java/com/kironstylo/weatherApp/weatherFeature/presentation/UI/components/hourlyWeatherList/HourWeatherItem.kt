@@ -2,6 +2,7 @@ package com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hour
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,12 +25,14 @@ import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.DateFormatter
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 
 @Composable
 fun HourWeatherItem(
     modifier : Modifier = Modifier,
     isSelected: Boolean = false,
-    hourlyWeather: HourlyWeather
+    hourlyWeather: HourlyWeather,
+    onEvent: (WeatherEvent) -> Unit
 ){
     OutlinedCard (
         colors = CardDefaults.cardColors(
@@ -45,7 +48,11 @@ fun HourWeatherItem(
         )
     ) {
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable{
+                    onEvent(WeatherEvent.ChangeTimeEvent(hourlyWeather.date))
+                },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
                 8.dp,
@@ -82,5 +89,5 @@ fun HourWeatherItemPreview(){
         hourlyWeather = HourlyWeather(
         ),
         isSelected = true
-    )
+    ){}
 }

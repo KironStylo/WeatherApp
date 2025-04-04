@@ -37,13 +37,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.R
+import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.DailyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
 import com.kironstylo.weatherApp.weatherFeature.domain.utils.Weather
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.WeatherInfo
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.DailyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.states.HourlyWeatherUIState
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.currentWeatherBox.*
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.dailyWeatherList.DailyWeatherList
 import com.kironstylo.weatherApp.weatherFeature.presentation.ui.components.hourlyWeatherList.*
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import java.time.LocalDateTime
 
 
@@ -52,13 +55,14 @@ fun WeatherScreen(
     modifier : Modifier = Modifier,
     hourlyWeatherUIState: HourlyWeatherUIState,
     dailyWeatherUIState: DailyWeatherUIState,
-    loadingState: Boolean
+    loadingState: Boolean,
+    onEvent: (WeatherEvent) -> Unit
 ){
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(space = 4.dp, alignment =  if(loadingState) Alignment.CenterVertically else Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment =  if(loadingState) Alignment.CenterVertically else Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(loadingState){
@@ -75,15 +79,24 @@ fun WeatherScreen(
                 dailyWeather = dailyWeatherUIState.selectedDailyWeather
             )
             HourlyWeatherList(
-                modifier = Modifier.weight(0.25f),
+                modifier = Modifier.weight(0.2f),
                 hourlyWeatherList = hourlyWeatherUIState.hourlyWeatherList,
                 isSelected = {
                     it.date.hour == hourlyWeatherUIState.selectedHourlyWeather.date.hour
-                }
-            ) {
-                it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
-            }
-            Text("Hi", modifier = Modifier.weight(0.25f))
+                },
+                filterList = {
+                    it.date.toLocalDate() == dailyWeatherUIState.selectedDailyWeather.date.toLocalDate()
+                },
+                onEvent = onEvent
+            )
+            DailyWeatherList(
+                modifier = Modifier.weight(0.25f),
+                dailyWeatherList = dailyWeatherUIState.dailyWeatherList,
+                isSelected = {
+                    dailyWeatherUIState.selectedDailyWeather.date.toLocalDate() == it.date.toLocalDate()
+                },
+                onEvent = onEvent
+            )
         }
     }
 }
@@ -108,282 +121,18 @@ fun WeatherScreenPreview(){
                     )
                 ),
             ),
-            dailyWeatherUIState = DailyWeatherUIState(),
+            dailyWeatherUIState = DailyWeatherUIState(
+                dailyWeatherList = listOf(
+                    DailyWeather(),
+                    DailyWeather(
+                        date = LocalDateTime.of(2025,4,4,14,0),
+                        maxTemperature = 20.0,
+                        minTemperature = 10.0
+                    ),
+                )
+            ),
             loadingState = false
-        )
+        ){}
     }
 
-}
-
-@Composable
-fun WeatherScreen(weatherViewModel: WeatherViewModel) {
-    val isCardLoading by weatherViewModel.weatherCardLoading.observeAsState(initial = true)
-    Column(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .background(Color(0xFFACBDBA)),
-        verticalArrangement = if (isCardLoading) Arrangement.Center else Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (isCardLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(200.dp),
-                color = Color(0xFFB58FE7),
-                trackColor = Color(0xFFA599B5)
-
-            )
-        } else {
-            WeatherInfoCard(weatherViewModel)
-            HourlyWeatherBox(weatherViewModel)
-        }
-    }
-}
-
-@Composable
-fun WeatherInfoCard(weatherViewModel: WeatherViewModel) {
-    val timeZone: WeatherViewModel.DateTime by weatherViewModel.timeZoneInfo.observeAsState(initial = WeatherViewModel.DateTime(
-        LocalDateTime.now()))
-    val weatherInfo: WeatherInfo by weatherViewModel.weatherInfo.observeAsState(initial = WeatherInfo())
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(420.dp)
-            .padding(start = 31.dp, end = 31.dp, top = 21.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFCDDDDD)
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        shape = RoundedCornerShape(40.dp),
-    )
-    {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                Weather.getWeatherNameByCode(
-                    weatherInfo.weatherCode,
-                    weatherInfo.weatherTime24
-                ).description,
-                Modifier.padding(top = 18.dp),
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Image(
-                painter = painterResource(
-                    id = Weather.getWeatherNameByCode(
-                        weatherInfo.weatherCode,
-                        weatherInfo.weatherTime24
-                    ).icon
-                ),
-                modifier = Modifier.size(120.dp),
-                contentDescription = ""
-            )
-            DateTimeText(timeZone)
-            Text(
-                "${weatherInfo.weatherTemperature}ºC",
-                style = TextStyle(
-                    fontSize = 50.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            )
-            MinMaxTemperatureInfo(
-                weatherInfo.weatherMaxTemperature,
-                weatherInfo.weatherMinTemperature
-            )
-            ExtraWeatherInfo(
-                weatherInfo.weatherPrecipitaion,
-                weatherInfo.weatherHumidity,
-                weatherInfo.weatherWindspeed
-            )
-
-        }
-    }
-
-}
-
-
-@Composable
-fun ExtraWeatherInfo(precipitationProb: Int, humidity: Int, windspeed: Double) {
-    Row(modifier = Modifier.padding(4.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-        ExtraWeatherCard(
-            "Rain",
-            {
-                Image(
-                    painterResource(id = R.drawable.umbrella),
-                    contentDescription = "RainImage",
-                    Modifier.size(65.dp)
-                )
-            },
-            "$precipitationProb%"
-        )
-        ExtraWeatherCard(
-            "Humidity",
-            {
-                Image(
-                    painterResource(id = R.drawable.drop),
-                    contentDescription = "HumidityImage",
-                    Modifier.size(65.dp)
-                )
-            },
-            "$humidity%"
-        )
-        ExtraWeatherCard(
-            "Wind Speed",
-            {
-                Image(
-                    painterResource(id = R.drawable.windy),
-                    contentDescription = "WindImage",
-                    Modifier.size(65.dp)
-                )
-            },
-            "$windspeed km/h"
-        )
-    }
-}
-
-@Composable
-fun ExtraWeatherCard(title: String, image: @Composable () -> Unit, value: String) {
-    val textStyle = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Normal)
-    val textStyle2 = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium)
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        image()
-        Text(value, style = textStyle2)
-        Text(title, style = textStyle)
-    }
-}
-
-@Composable
-fun DateTimeText(timeZone: WeatherViewModel.DateTime) {
-    val textStyle = TextStyle(
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Normal
-    )
-    Row(modifier = Modifier.height(18.dp), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text(timeZone.date ?: "", style = textStyle)
-        VerticalDivider(
-            thickness = 1.dp,
-            color = Color(0xFF051014)
-        )
-        Text(timeZone.hour ?: "", style = textStyle)
-
-    }
-}
-
-@Composable
-fun MinMaxTemperatureInfo(maxTemp: Double, minTemp: Double) {
-    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        MinTempInfo(minTemp)
-        MaxTempInfo(maxTemp)
-    }
-}
-
-@Composable
-fun MinTempInfo(minTem: Double) {
-    Text(
-        buildAnnotatedString {
-            withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp)) {
-                append("Min:")
-            }
-            withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Light)) {
-                append("${minTem}ºC")
-            }
-        }
-    )
-}
-
-@Composable
-fun MaxTempInfo(maxTemp: Double) {
-    Text(
-        buildAnnotatedString {
-            withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 16.sp)) {
-                append("Max:")
-            }
-            withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Light)) {
-                append("${maxTemp}ºC")
-            }
-        }
-    )
-}
-
-
-@Composable
-fun HourlyWeatherBox(weatherViewModel: WeatherViewModel) {
-    val hourWeatherInfo: List<WeatherInfo> by weatherViewModel.hourWeatherInfo.observeAsState(
-        initial = listOf()
-    )
-    Column(
-        modifier = Modifier
-            .width(390.dp)
-            .height(160.dp)
-            .padding(horizontal = 11.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text("Today", style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold))
-        HourlyWeatherCardList(hourWeatherInfo)
-    }
-}
-
-@Composable
-fun HourlyWeatherCardList(hourWeatherInfo: List<WeatherInfo>) {
-    LazyRow(
-        modifier = Modifier
-            .width(390.dp)
-            .wrapContentHeight(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        items(hourWeatherInfo) { hourWeather ->
-            HourlyWeatherCard(
-                weatherInfo = hourWeather
-            )
-        }
-    }
-}
-
-@Composable
-fun HourlyWeatherCard(weatherInfo: WeatherInfo) {
-    ElevatedCard(
-        modifier = Modifier
-            .width(85.dp)
-            .height(120.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFCDDDDD)
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
-        ) {
-            Text(
-                weatherInfo.weatherTime12,
-                style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Normal)
-            )
-            Image(
-                painterResource(
-                    id = Weather.getWeatherNameByCode(
-                        weatherInfo.weatherCode,
-                        weatherInfo.weatherTime24
-                    ).icon
-                ),
-                contentDescription = Weather.getWeatherNameByCode(
-                    weatherInfo.weatherCode,
-                    weatherInfo.weatherTime24
-                ).description,
-                modifier = Modifier.size(50.dp)
-            )
-            Text(
-                "${weatherInfo.weatherTemperature}",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)
-            )
-        }
-    }
 }

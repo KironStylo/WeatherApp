@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kironstylo.weatherApp.weatherFeature.domain.model.weather.HourlyWeather
+import com.kironstylo.weatherApp.weatherFeature.presentation.ui.events.WeatherEvent
 import java.time.LocalDateTime
 
 @Composable
@@ -35,7 +36,8 @@ fun HourlyWeatherList(
     modifier: Modifier = Modifier,
     hourlyWeatherList: List<HourlyWeather>,
     isSelected: (HourlyWeather) -> Boolean,
-    filterList: (HourlyWeather) -> Boolean
+    filterList: (HourlyWeather) -> Boolean,
+    onEvent:(WeatherEvent) -> Unit
 ){
     Column (
         modifier = modifier
@@ -66,7 +68,7 @@ fun HourlyWeatherList(
                 .weight(0.9f)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
         ) {
             items(
                 hourlyWeatherList.filter{
@@ -75,7 +77,8 @@ fun HourlyWeatherList(
             ){
                 HourWeatherItem(
                     isSelected = isSelected(it),
-                    hourlyWeather = it
+                    hourlyWeather = it,
+                    onEvent = onEvent
                 )
             }
         }
@@ -96,8 +99,10 @@ fun HourlyWeatherListPreview(){
         isSelected = { it ->
             it.date.toLocalDate() == HourlyWeather().date.toLocalDate() &&
                     it.date.hour == HourlyWeather().date.hour
-        }
+        },
+        filterList = {
+            it.date.toLocalDate() == LocalDateTime.now().toLocalDate()
+        },
     ) {
-        it.date.toLocalDate() == LocalDateTime.now().toLocalDate()
     }
 }
