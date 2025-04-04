@@ -65,6 +65,7 @@ fun FindCity(query:String,onEvent:(String)->Unit){
             Text("Ingrese nombre de ciudad")
         },
         maxLines = 1,
+        singleLine = true,
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0xFFF2EFEF),
