@@ -58,6 +58,15 @@ This version has the following features:
   * Wind speed.
   * A list of today's temperature for every hour with a weather icon.
 
+### Version 3.0
+This version has the following features:
+* Search screen actions:
+  * Users must click on the city they want to get info on the weather and tap on the confirm button.
+  * Result section informs user when there were no results for their search and when user hasn't entered a city.
+* Weather screen actions:
+  * Users can choose an hour or date from the available forecast to get more information about the weather for a certain time.
+
+
 ### App software-details 🤖
 
 The app sends three API requests to two websites: Open-Meteo and Time Api
@@ -79,8 +88,6 @@ Each website contains examples of how each API call should be made and you could
 
 ### Some possible improvements for the app 🧰🪛
 I'll improve the following things in the near future:
-> * Add an UI component to show the weather name, max and min temperature, and day of the week at the end of the screen.
-> * Use StateFlow to retrieve weather and timezone data in one use case from the two API services.
 > * Handle navigation between screens using a middle layer controller class or passing a singleton navigation controller to view models (Still deciding)
 > * I am planning to add a Settings screen to allow users select app language, temperature and wind speed units.
 > * Regarding weather icons, I might use a different method to display them since I don't think it's a good idea to store all icons in the drawable folder.
@@ -93,6 +100,8 @@ So far, I have managed to implement these things on the app:
 1) Create packages for specific app features and divide each package into three layers: presentation, domain, and data.
 2) Make Search screen more intuitive by adding a checkbox at the end of a city so users know from what city they're getting weather data.
 3) Search screen uses UIStates and UIEvents which are handled by the viewmodel. This means the screen can be previewed or tested.
+4) Weather screen displays forecast information up to 7 days. Current Weather Box changes depending on what time or date has been selected, so Users can get more information about the weather at a certain point of time within the forecast.
+5) Weather view model uses StateFlow to retrieve forecast data from a Use Case which combines both API calls (Timezone and Weather APIs) in one.
 
 
 
