@@ -8,7 +8,7 @@ object Weather {
 
     data class WeatherCode(
         val description: String,
-        val icon: Int = R.drawable.cloudy
+        val icon: Int = R.drawable.sunny
     )
 
     private val weatherCodes: Map<Int, Map<String, WeatherCode>> = mapOf(
@@ -49,12 +49,12 @@ object Weather {
             "night" to WeatherCode("Heavy drizzle", R.drawable.drizzle_night)
         ),
         56 to mapOf(
-            "day" to WeatherCode("Light Freezing drizzle"),
-            "night" to WeatherCode("Light Freezing drizzle")
+            "day" to WeatherCode("Light Freezing drizzle", R.drawable.drizzle_sunny),
+            "night" to WeatherCode("Light Freezing drizzle", R.drawable.drizzle_night)
         ),
         57 to mapOf(
-            "day" to WeatherCode("Freezing drizzle"),
-            "night" to WeatherCode("Freezing drizzle")
+            "day" to WeatherCode("Freezing drizzle", R.drawable.drizzle_sunny),
+            "night" to WeatherCode("Freezing drizzle", R.drawable.drizzle_night)
         ),
         61 to mapOf(
             "day" to WeatherCode("Light rain", R.drawable.rainy),
@@ -69,24 +69,24 @@ object Weather {
             "night" to WeatherCode("Heavy rain", R.drawable.rainy)
         ),
         66 to mapOf(
-            "day" to WeatherCode("Light Freezing rain"),
-            "night" to WeatherCode("Light Freezing rain")
+            "day" to WeatherCode("Light Freezing rain", R.drawable.rainy),
+            "night" to WeatherCode("Light Freezing rain", R.drawable.rainy)
         ),
         67 to mapOf(
-            "day" to WeatherCode("Freezing rain"),
-            "night" to WeatherCode("Freezing rain")
+            "day" to WeatherCode("Freezing rain", R.drawable.rainy),
+            "night" to WeatherCode("Freezing rain", R.drawable.rainy)
         ),
         71 to mapOf(
-            "day" to WeatherCode("Light snow"),
-            "night" to WeatherCode("Light snow")
+            "day" to WeatherCode("Light snow", R.drawable.snowy_day),
+            "night" to WeatherCode("Light snow", R.drawable.snowy_night)
         ),
         73 to mapOf(
-            "day" to WeatherCode("Snow"),
-            "night" to WeatherCode("Snow")
+            "day" to WeatherCode("Snow", R.drawable.snowy_day),
+            "night" to WeatherCode("Snow", R.drawable.snowy_night)
         ),
         75 to mapOf(
-            "day" to WeatherCode("Heavy snow"),
-            "night" to WeatherCode("Heavy snow")
+            "day" to WeatherCode("Heavy snow", R.drawable.snowy_day),
+            "night" to WeatherCode("Heavy snow", R.drawable.snowy_night)
         ),
         80 to mapOf(
             "day" to WeatherCode("Light showers", R.drawable.showers),
@@ -101,24 +101,24 @@ object Weather {
             "night" to WeatherCode("Heavy showers", R.drawable.showers)
         ),
         85 to mapOf(
-            "day" to WeatherCode("Light Snow showers"),
-            "night" to WeatherCode("Light Snow showers")
+            "day" to WeatherCode("Light Snow showers", R.drawable.snowy_showers),
+            "night" to WeatherCode("Light Snow showers", R.drawable.snowy_showers)
         ),
         86 to mapOf(
-            "day" to WeatherCode("Snow showers"),
-            "night" to WeatherCode("Snow showers")
+            "day" to WeatherCode("Snow showers", R.drawable.snowy_showers),
+            "night" to WeatherCode("Snow showers", R.drawable.snowy_showers)
         ),
         95 to mapOf(
-            "day" to WeatherCode("Thunderstorm"),
-            "night" to WeatherCode("Thunderstorm")
+            "day" to WeatherCode("Thunderstorm", R.drawable.stormy_day),
+            "night" to WeatherCode("Thunderstorm", R.drawable.night)
         ),
         96 to mapOf(
-            "day" to WeatherCode("Light thunderstorm with hail"),
-            "night" to WeatherCode("Light thunderstorm with hail")
+            "day" to WeatherCode("Light thunderstorm with hail", R.drawable.stormy_hail),
+            "night" to WeatherCode("Light thunderstorm with hail", R.drawable.stormy_hail)
         ),
         99 to mapOf(
-            "day" to WeatherCode("Thunderstorm with hail"),
-            "night" to WeatherCode("Thunderstorm with hail")
+            "day" to WeatherCode("Thunderstorm with hail", R.drawable.stormy_hail),
+            "night" to WeatherCode("Thunderstorm with hail", R.drawable.stormy_hail)
         )
     )
 
