@@ -110,7 +110,7 @@ object Weather {
         ),
         95 to mapOf(
             "day" to WeatherCode("Thunderstorm", R.drawable.stormy_day),
-            "night" to WeatherCode("Thunderstorm", R.drawable.night)
+            "night" to WeatherCode("Thunderstorm", R.drawable.stormy_night)
         ),
         96 to mapOf(
             "day" to WeatherCode("Light thunderstorm with hail", R.drawable.stormy_hail),
