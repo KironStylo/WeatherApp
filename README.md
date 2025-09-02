@@ -89,6 +89,7 @@ Each website contains examples of how each API call should be made and you could
 ### Some possible improvements for the app 🧰🪛
 I'll improve the following things in the near future:
 > * Handle navigation between screens using a middle layer controller class or passing a singleton navigation controller to view models (Still deciding)
+> * I have yet to understand why the API call fails when attempting to retrieve both weather and time information. It seems time API 
 > * I am planning to add a Settings screen to allow users select app language, temperature and wind speed units.
 > * Regarding weather icons, I might use a different method to display them since I don't think it's a good idea to store all icons in the drawable folder.
 > * Regarding code optimizations, I might use a different approach to MVVM architectures since all view models are injected in my views for previewing and UI tests.

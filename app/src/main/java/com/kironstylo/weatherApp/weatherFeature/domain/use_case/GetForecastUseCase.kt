@@ -27,7 +27,7 @@ class GetForecastUseCase @Inject constructor(
                 }
                 weatherResult is Resource.Success && timeResult is Resource.Success -> {
                     Log.i("ForecastUC", "Successful")
-                    Log.i("ForecastUC", "Succesful \n ${weatherResult.data?.dailyWeather}")
+                    Log.i("ForecastUC", "Successful \n ${weatherResult.data?.dailyWeather}")
                     Resource.Success(
                         weatherResult.data?.copy(
                             hourlyWeather = weatherResult.data.hourlyWeather.map{ hourly ->
